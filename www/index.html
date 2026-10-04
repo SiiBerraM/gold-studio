@@ -1,1 +1,231 @@
-x
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>جولد ستوديو — محلل تيك توك</title>
+<style>
+:root{--bg:#0a0a0a;--card:#16140e;--tx:#f6efd8;--mu:#a39a7c;--g:#e5b92e;--g2:#a8801a;--bd:#3a3015;--ok:#4cd68a;--bad:#ff5c6c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:radial-gradient(1200px 500px at 50% -10%,#2a200a,#0a0a0a 60%);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.6}
+.w{max-width:560px;margin:0 auto;padding:16px 16px 110px}
+h1,h2,h3{margin:0 0 8px}
+.gt{background:linear-gradient(90deg,#fff2b0,#e5b92e,#a8801a);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.card{background:linear-gradient(160deg,#1c1810,#110f09);border:1px solid var(--bd);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 4px 18px #0008}
+.card.hl{border-color:var(--g)}
+button,input,select,textarea{font:inherit}
+.b{display:block;width:100%;padding:12px;border-radius:12px;border:0;background:linear-gradient(135deg,#f6d55c,#c99a1c);color:#140f00;font-weight:800;margin:8px 0;cursor:pointer}
+.b.o{background:transparent;color:var(--g);border:1px solid var(--g2)}
+.b.s{width:auto;margin:0;padding:8px 14px;font-size:.9em}
+.b[disabled]{opacity:.4}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:#0d0c08;color:var(--tx);margin:5px 0}
+textarea{min-height:80px}
+.mu{color:var(--mu);font-size:.88em}
+.pts{color:var(--g);font-weight:800}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+ul{padding-inline-start:20px;margin:6px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0c0b07ee;border-top:1px solid var(--bd);display:flex;overflow-x:auto;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(8px);z-index:5}
+nav button{flex:0 0 auto;min-width:68px;background:none;border:0;color:var(--mu);font-size:.72em;padding:4px 0;position:relative}
+nav button i{display:block;font-style:normal;font-size:1.5em}
+nav button.on{color:var(--g)}
+.dot{position:absolute;top:0;right:30%;background:var(--bad);color:#fff;border-radius:9px;font-size:.9em;padding:0 5px}
+.vip{position:fixed;inset:0;z-index:9;background:radial-gradient(circle,#3a2a05,#000 70%);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;animation:f .9s}
+.vip h1{font-size:2em}
+@keyframes f{from{opacity:0;transform:scale(1.05)}}
+.tag{display:inline-block;border:1px solid var(--g2);color:var(--g);border-radius:20px;padding:0 9px;font-size:.78em}
+.img{width:100%;border-radius:12px;border:1px solid var(--g2);background:#000;margin-top:8px}
+pre{white-space:pre-wrap;font-family:inherit;margin:6px 0}
+.av{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;background:var(--g2);color:#000;font-weight:800;font-size:.8em}</style>
+</head>
+<body>
+<div class="w" id="app"></div>
+<script>
+var ADMIN="berramouhcine13@gmail.com",TT="https://www.tiktok.com/@berramouhcine?_r=1&_t=ZS-9ACFax6ltXm";
+var D={users:{},me:"",codes:["GOLD30"],partners:[{id:"p1",type:"follow",name:"قناة صاحب التطبيق",url:TT,pts:25},{id:"p2",type:"like",name:"أعجب بفيديو مقترح",url:TT,pts:10}],bc:[],cn:[],posts:[],gifts:[],set:{price:10,ad:5,adMax:5}};
+try{var x=JSON.parse(localStorage.getItem("gs")||"null");if(x)D=x}catch(e){}
+D.cn=D.cn||[];D.posts=D.posts||[];D.gifts=D.gifts||[];D.set=D.set||{price:10,ad:5,adMax:5};D.tasks=D.tasks||[];
+var U=null,tab="home",out="",ver=null,welcomed=false,ai=null;
+function sv(){try{localStorage.setItem("gs",JSON.stringify(D))}catch(e){}}
+function h(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function hash(s){var a=5381;for(var i=0;i<s.length;i++)a=(a*33)^s.charCodeAt(i);return String(a>>>0)}
+function G(i){return document.getElementById(i)}
+function isA(){return U&&U.email===ADMIN}
+function paid(){return pd(U)}
+function note(u,t){u.notes=u.notes||[];u.notes.unshift({t:t,d:new Date().toLocaleString("ar")});sv()}
+function R(s){G("app").innerHTML=s}
+function render(){
+ U=D.me?D.users[D.me]:null;
+ if(!U)return auth();
+ if(!U.verified)return verify();
+ if(banned(U))return R("<div class=card style='margin-top:40px'><h2 class=bad>🚫 حسابك محظور</h2><p>"+(U.ban===-1?"حظر نهائي":"حتى "+new Date(U.ban).toLocaleString("ar"))+(U.banWhy?"<br>السبب: "+h(U.banWhy):"")+"</p><button class='b o' onclick=\"D.me='';sv();render()\">خروج</button></div>");
+ if(!isA()&&!U.followed)return follow();
+ if(!isA()&&!U.tt)return ttl();
+ if(!isA()&&!U.plan&&!paid())return plans();
+ var gk=new Date().getFullYear()+"-"+new Date().getMonth();if((U.role==="vip"||U.role==="verified")&&U.gk!==gk){var gg=U.role==="vip"?500:100;U.gk=gk;U.pts+=gg;note(U,"🎁 هدية رتبتك الشهرية: "+gg+" نقطة")}
+ main();
+ if(isA()&&!welcomed){welcomed=true;note(U,"👑 مرحبًا بك سيد محسين");var d=document.createElement("div");d.className="vip";d.innerHTML="<div><div style='font-size:4em'>👑</div><h1 class=gt>أهلاً بك سيّدي محسين</h1><p style='color:#f5e6a8'>صاحب التطبيق وصاحب السيطرة الكاملة<br>نقاط لا نهائية · كل الخدمات بلا قيود</p><button class=b style='margin-top:22px' onclick='this.parentNode.parentNode.remove()'>ادخل إلى مملكتك</button></div>";document.body.appendChild(d)}
+}
+function auth(){
+ var m=ver==="login";
+ R("<div style='text-align:center;margin:28px 0 8px'><div style='font-size:3em'>✦</div><h1 class=gt>جولد ستوديو</h1><div class=mu>حلّل حسابك على تيك توك · اربح نقاطًا · أبدع بالذكاء الاصطناعي</div></div><div class=card><div class=row><button class='b s "+(m?"":"o")+"' onclick=\"ver='login';auth()\">دخول</button><button class='b s "+(m?"o":"")+"' onclick=\"ver='';auth()\">حساب جديد</button></div><input id=e type=email placeholder='البريد الإلكتروني'>"+(m?"":"<input id=ph type=tel placeholder='رقم الهاتف (اختياري)'>")+"<input id=pw type=password placeholder='الرقم السري'>"+(m?"":"<input id=pw2 type=password placeholder='تأكيد الرقم السري'>")+"<button class=b onclick=\"go("+m+")\">"+(m?"تسجيل الدخول":"إنشاء الحساب")+"</button><button class='b o' onclick=\"alert('الدخول عبر فيسبوك يحتاج ربطًا رسميًا في النسخة الحقيقية')\">المتابعة عبر فيسبوك</button></div>");
+ if(!ver)ver="";
+}
+function go(login){
+ var e=G("e").value.trim().toLowerCase(),p=G("pw").value;
+ if(!/^\S+@\S+\.\S+$/.test(e))return alert("بريد غير صحيح");
+ if(p.length<6)return alert("الرقم السري 6 خانات على الأقل");
+ if(login){var u=D.users[e];if(!u||u.pw!==hash(p))return alert("بيانات الدخول غير صحيحة");D.me=e;sv();return render()}
+ if(D.users[e])return alert("هذا البريد مسجل مسبقًا");
+ if(p!==G("pw2").value)return alert("الرقمان السريان غير متطابقين");
+ var c=String(Math.floor(100000+Math.random()*900000));
+ D.users[e]={email:e,phone:G("ph").value,pw:hash(p),verified:false,code:c,followed:false,plan:"",pts:0,done:{},notes:[],seen:0};
+ D.me=e;sv();render();
+}
+function verify(){
+ R("<h2 class=gt style='margin-top:30px'>تأكيد البريد الإلكتروني</h2><div class=card><p>أدخل الرمز المرسل إلى <b>"+h(U.email)+"</b></p><input id=vc inputmode=numeric placeholder='رمز من 6 أرقام'><button class=b onclick=\"if(G('vc').value===U.code){U.verified=true;note(U,'✅ تم تأكيد بريدك');sv();render()}else alert('رمز خاطئ')\">تأكيد</button><div class='card hl mu'>وضع تجريبي: لا يوجد خادم بريد، رمزك هو <b class=pts>"+U.code+"</b>. في النسخة الحقيقية يصل الرمز إلى بريدك فعلًا.</div><button class='b o' onclick=\"D.me='';sv();render()\">رجوع</button></div>");
+}
+function follow(){
+ R("<h2 class=gt style='margin-top:30px'>اشترك في قناة صاحب التطبيق</h2><div class=card><p>الاشتراك في قناته على تيك توك <b>إجباري</b>.</p><button class=b onclick=\"window.open('"+TT+"','_blank');G('c').disabled=false\">🎵 افتح القناة</button><button class='b o' id=c disabled onclick=\"U.followed=true;sv();render()\">✅ اشتركت، متابعة</button><p class=mu>التحقق التلقائي من الاشتراك يتطلب واجهة تيك توك الرسمية.</p></div>");
+}
+function plans(){
+ R("<h2 class=gt style='margin-top:30px'>اختر خطتك</h2><div class='card hl'><h3>💎 اشتراك شهري — 3$</h3><p class=mu>كل الخدمات بلا نقاط.</p><button class=b onclick=\"sub(30)\">اشترك بـ 3$ (تجريبي)</button></div><div class=card><h3>🎁 مجاني</h3><p class=mu>اكسب النقاط بالمهام والقنوات واشترِ بها الخدمات.</p><button class='b o' onclick=\"U.plan='free';sv();render()\">ابدأ مجانًا</button></div><div class=card><h3>🎟️ لديك كود؟</h3><input id=cd placeholder='أدخل الكود'><button class='b o' onclick=redeem()>تفعيل الكود</button></div>");
+}
+function sub(d){U.plan="paid";U.exp=Math.max(Date.now(),U.exp||0)+d*864e5;note(U,"💎 تم تفعيل اشتراكك لمدة "+d+" يومًا");sv();render()}
+function redeem(){var c=G("cd").value.trim().toUpperCase(),i=D.codes.indexOf(c);if(i<0)return alert("كود غير صالح أو مستعمل");D.codes.splice(i,1);sub(30);}
+var NAV=[["home","✦","الخدمات"],["quests","🏆","المهام"],["chan","📺","القنوات"],["rank","🏅","الترتيب"],["ai","🤖","الذكاء"],["com","💬","المجتمع"],["nt","🔔","الإشعارات"],["me","👤","حسابي"],["adm","🛡️","الإدارة"]];
+function unseen(){return (U.notes||[]).length+D.bc.length-U.seen}
+function main(){
+ var b=isA()?"∞":U.pts,s="<div class=row><h2 class=gt>✦ جولد ستوديو</h2><span class=tag>"+(isA()?"👑 المدير":paid()?"💎 مشترك":"🎁 مجاني")+"</span></div><div class='card hl'><div class=row><span>"+av(U)+" "+nm(U)+"</span><span class=pts style='font-size:1.3em'>"+b+" نقطة</span></div></div>";
+ if(tab==="home")s+=home();else if(tab==="quests")s+=quests()+ads();else if(tab==="chan")s+=chan();else if(tab==="rank")s+=rank();else if(tab==="com")s+=com();else if(tab==="ai")s+=aiP()+upl();else if(tab==="nt")s+=nts();else if(tab==="adm")s+=adm();else s+=me()+prof();
+ s+="<nav>"+NAV.filter(function(n){return n[0]!=="adm"||isM()}).map(function(n){var u=n[0]==="nt"&&unseen()>0&&tab!=="nt"?"<span class=dot>"+unseen()+"</span>":"";return "<button class='"+(tab===n[0]?"on":"")+"' onclick=\"tab='"+n[0]+"';out='';main()\"><i>"+n[1]+"</i>"+n[2]+u+"</button>"}).join("")+"</nav>";
+ R(s);
+}
+function today(){return new Date().toDateString()}
+function pay(c){c=D.set.price;if(isA()||paid())return true;if(U.pts<c){alert("نقاطك لا تكفي. اربح المزيد من المهام والقنوات.");return false}U.pts-=c;sv();return true}
+function cost(c){return isA()?"مجاني":paid()?"مشمول":D.set.price+" نقطة"}
+var SV=[["videos","تحليل الفيديوهات",30],["subs","تحليل الاشتراكات",20],["eng","تحليل التفاعلات",20],["content","تحليل المحتوى",30],["ideas","اقتراح محتوى لمؤهلاتك",40],["swot","القوة والضعف وخطة العمل",50]];
+function home0(){
+ var st=U.st||{},f=[["followers","المتابعون"],["following","المتابَعون"],["likes","إجمالي الإعجابات"],["videos","عدد الفيديوهات"],["views","متوسط المشاهدات"],["avglikes","متوسط الإعجابات"],["comments","متوسط التعليقات"]];
+ var s="<div class=card><h3>📊 بيانات حسابك</h3>"+f.map(function(x){return "<input type=number id=s_"+x[0]+" placeholder='"+x[1]+"' value='"+(st[x[0]]||"")+"'>"}).join("")+"<input id=s_niche placeholder='مجال الحساب' value='"+h(st.niche||"")+"'><input id=s_skill placeholder='مهاراتك ومؤهلاتك' value='"+h(st.skill||"")+"'><button class='b o' onclick=svst()>حفظ البيانات</button></div>";
+ s+=SV.map(function(v){return "<div class=card><div class=row><span>"+v[1]+"<br><span class=mu>"+cost(v[2])+"</span></span><button class='b s' onclick=\"run('"+v[0]+"',"+v[2]+")\">تشغيل</button></div></div>"}).join("");
+ return s+(out?"<div class='card hl'>"+out+"</div>":"");
+}
+function svst(){U.st={niche:G("s_niche").value.trim(),skill:G("s_skill").value.trim()};["followers","following","likes","videos","views","avglikes","comments"].forEach(function(k){U.st[k]=+G("s_"+k).value||0});sv();alert("تم الحفظ ✅")}
+function run(id,c){svst();if(!U.st.followers||!U.st.views)return alert("أدخل المتابعين والمشاهدات أولًا");if(!pay(c))return;var x=U.st,vr=pc(x.views,x.followers),er=pc(x.avglikes,x.views),ra=x.followers/(x.following||1),n=x.videos||1,L=[],t=SV.filter(function(v){return v[0]===id})[0][1];
+ if(id==="videos"){L=["متوسط المشاهدات = "+vr.toFixed(1)+"% من متابعيك.",vr<10?"<span class=bad>وصول ضعيف: حسّن أول 3 ثوانٍ.</span>":"<span class=ok>وصول جيد.</span>","انشر 1-2 فيديو يوميًا وجرّب أوقات نشر مختلفة."]}
+ if(id==="subs"){L=["نسبة المتابعين/المتابَعين: "+ra.toFixed(1),ra<2?"<span class=bad>قلّل المتابعات العشوائية.</span>":"<span class=ok>نسبة صحية.</span>","رُدّ على التعليقات في أول ساعة."]}
+ if(id==="eng"){L=["معدل التفاعل: "+er.toFixed(1)+"%","متوسط التعليقات: "+(x.comments||0)+((x.comments||0)<x.views*0.005?" — ضعيفة، اطرح أسئلة تستفز النقاش":" — جيدة"),er<3?"<span class=bad>ضعيف: أضف سؤالًا في نهاية الفيديو.</span>":"<span class=ok>تفاعل جيد.</span>"]}
+ if(id==="content"){L=["إعجابات الفيديو الواحد: "+(x.likes/n).toFixed(0),"اجعل الفيديو 15-30 ثانية مع قيمة واضحة ونهاية تدفع للإعادة."]}
+ if(id==="ideas"){var m=x.niche||"مجالك";L=["«5 أخطاء شائعة في "+m+"»"+(x.skill?" بخبرتك في "+x.skill:""),"قبل/بعد: تحوّل حقيقي","فيديو يجيب أسئلة المتابعين","كواليس يوم كامل","تحدّي 7 أيام"]}
+ if(id==="swot"){var S=[],W=[];(vr>=20?S:W).push("نسبة الوصول "+vr.toFixed(0)+"%");(er>=5?S:W).push("معدل التفاعل "+er.toFixed(1)+"%");(ra>=2?S:W).push("نسبة المتابعين");(n>=30?S:W).push("عدد الفيديوهات "+n);
+  out="<h3>"+t+"</h3><b class=ok>القوة</b><ul>"+(S.map(function(q){return "<li>"+q+"</li>"}).join("")||"<li>—</li>")+"</ul><b class=bad>الضعف</b><ul>"+(W.map(function(q){return "<li>"+q+"</li>"}).join("")||"<li>—</li>")+"</ul><b>افعل الآن</b><ul><li>انشر يوميًا</li><li>حسّن البداية</li><li>كرّر الأنجح</li></ul>";return main()}
+ out="<h3>"+t+"</h3><ul>"+L.map(function(q){return "<li>"+q+"</li>"}).join("")+"</ul>";main();
+}
+function pc(a,b){return b?a/b*100:0}
+var TK=[["checkin","تسجيل الحضور اليومي",10],["share","مشاركة التطبيق مع صديق",15],["tips","قراءة نصيحة اليوم",10]];
+function quests0(){return "<div class=card><h3>🏆 مهام يومية</h3>"+TK.map(function(k){var d=U.done[k[0]]===today();return "<div class=row style='margin:10px 0'><span>"+k[1]+" <span class=pts>+"+k[2]+"</span></span><button class='b s' "+(d?"disabled":"")+" onclick=\"qt('"+k[0]+"',"+k[2]+")\">"+(d?"تم ✓":"أنجز")+"</button></div>"}).join("")+"</div>"}
+function qt(k,p){U.done[k]=today();earn(p);note(U,"+"+p+" نقطة: "+k);sv();main()}
+function chan(){
+ var s="<div class=card><h3>📺 مهام القنوات المقترحة</h3><p class=mu>اشترك أو أعجب بالفيديو ثم ارجع واضغط تحقق لتأخذ نقاطك.</p></div>";
+ s+=D.partners.map(function(p){var d=U.done[p.id];return "<div class=card><div class=row><span>"+(p.type==="follow"?"➕ اشتراك":"❤️ إعجاب")+" — "+h(p.name)+"<br><span class=pts>+"+p.pts+" نقطة</span></span><div>"+(d?"<span class=ok>تم ✓</span>":"<button class='b s' onclick=\"window.open('"+h(p.url)+"','_blank');this.nextSibling.disabled=false\">افتح</button> <button class='b o s' disabled onclick=\"cht('"+p.id+"',"+p.pts+")\">تحقق</button>")+"</div></div></div>"}).join("");
+ if(isA())s+="<div class='card hl'><h3>👑 إضافة مهمة قناة</h3><input id=pn placeholder='الاسم'><input id=pu placeholder='الرابط'><input id=pp type=number placeholder='النقاط'><select id=pt><option value=follow>اشتراك</option><option value=like>إعجاب</option></select><button class=b onclick=addp()>إضافة</button></div>";
+ return s;
+}
+function cht(id,p){U.done[id]=1;earn(p);note(U,"+"+p+" نقطة من مهمة قناة");sv();main()}
+function addp(){var n=G("pn").value.trim(),u=G("pu").value.trim();if(!n||!/^https?:/.test(u))return alert("أكمل البيانات");D.partners.push({id:"p"+Date.now(),type:G("pt").value,name:n,url:u,pts:+G("pp").value||10});D.bc.unshift({t:"📺 مهمة جديدة: "+n,d:new Date().toLocaleString("ar")});sv();main()}
+function aiP(){
+ return "<div class=card><h3>🤖 استوديو الذكاء الاصطناعي</h3><p class=mu>الصور تُرسم كرسومات متجهة (SVG)، والأغاني تُكتب كلماتها مع وصف أسلوب موسيقي جاهز للصقه في أداة توليد الصوت.</p><textarea id=ap placeholder='صف ما تريده...'></textarea><div class=row style='gap:6px'><button class='b s' style='flex:1' onclick=\"gen('img')\">🎨 صورة ("+cost(25)+")</button><button class='b s' style='flex:1' onclick=\"gen('song')\">🎵 أغنية ("+cost(30)+")</button><button class='b s' style='flex:1' onclick=\"gen('cap')\">✍️ وصف ("+cost(10)+")</button></div></div>"+(ai?"<div class='card hl' id=ao>"+ai+"</div>":"");
+}
+async function gen(k){
+ var p=G("ap").value.trim();if(!p)return alert("اكتب وصفًا");
+ var c={img:25,song:30,cap:10}[k];var sm=null;try{sm=await claude.use("sample")}catch(e){}
+ if(!sm){ai="<span class=bad>الذكاء الاصطناعي غير متاح هنا. افتح الصفحة من claude.ai.</span>";return main()}
+ if(!pay(c))return;
+ var ins={img:"ارسم الطلب كصورة SVG كاملة، viewBox='0 0 400 400'، ألوان غنية. أعد كود SVG فقط بدون أي شرح أو علامات.",song:"اكتب أغنية: عنوان، كلمات (مقطعان وكورس) بلغة الطلب، ثم سطر 'وصف الأسلوب الموسيقي' بالإنجليزية جاهز للصقه في أداة توليد موسيقى.",cap:"اكتب 3 أوصاف جذابة لفيديو تيك توك مع 8 هاشتاغات لكل منها."}[k];
+ ai="⏳ جارٍ الإبداع...";main();
+ try{var r=await sm(ins+"\nالطلب: "+p);var t=r.text||"";
+  if(k==="img"){var m=t.match(/<svg[\s\S]*<\/svg>/i);ai=m?"<img class=img alt='' src='data:image/svg+xml;utf8,"+encodeURIComponent(m[0])+"'>":"تعذّر توليد الصورة، حاول مجددًا"}
+  else ai="<pre>"+h(t)+"</pre>";
+  note(U,"🤖 تم توليد عملك بالذكاء الاصطناعي")}catch(e){ai="<span class=bad>تعذر التنفيذ: "+h(e.message||"")+"</span>"}
+ main();
+}
+function nts(){U.seen=(U.notes||[]).length+D.bc.length;sv();var a=D.bc.concat(U.notes||[]);return "<div class=card><h3>🔔 الإشعارات</h3>"+(a.map(function(n){return "<div style='border-bottom:1px solid var(--bd);padding:8px 0'>"+h(n.t)+"<br><span class=mu>"+n.d+"</span></div>"}).join("")||"<p class=mu>لا إشعارات</p>")+"<p class=mu>الإشعارات هنا داخل التطبيق. وصول إشعار فعلي إلى الهاتف يحتاج خادم Push في النسخة الحقيقية.</p></div>"}
+function me0(){
+ var s="<div class=card><h3>👤 حسابي</h3><p>"+h(U.email)+"<br><span class=mu>الاشتراك: "+(isA()?"مدير دائم":paid()?"حتى "+new Date(U.exp).toLocaleDateString("ar"):"مجاني")+"</span></p></div><div class=card><h3>🎟️ تفعيل كود اشتراك شهري</h3><input id=cd placeholder='أدخل الكود'><button class=b onclick=redeem()>تفعيل</button></div><button class='b o' onclick=\"D.me='';sv();render()\">تسجيل الخروج</button>";
+ return s;
+}
+function pd(u){return u.email===ADMIN||(u.exp&&u.exp>Date.now())}
+function isM(){return isA()||U.role==="admin"}
+function banned(u){return u.ban===-1||(u.ban&&u.ban>Date.now())}
+var RL={verified:"✔️ مميز",vip:"⭐ VIP",admin:"🛡️ أدمن"};
+function nm(u){var c=(pd(u)||u.role==="vip")&&u.color?";color:"+u.color:"";return "<b style='"+c+"'>"+h(u.email.split("@")[0])+"</b>"+(u.email===ADMIN?" 👑":u.role?" <span class=tag>"+RL[u.role]+"</span>":"")}
+function av(u){return u.avatar?"<img class=av src='"+u.avatar+"'>":"<span class=av>"+h(u.email[0].toUpperCase())+"</span>"}
+function earn(p){U.pts+=p;U.mpts=(U.mpts||0)+p;U.apts=(U.apts||0)+p}
+function rs(f,cb){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=c.height=96;var s=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,96,96);cb(c.toDataURL("image/jpeg",.8))};im.src=r.result};r.readAsDataURL(f)}
+function ttl(){R("<h2 class=gt style='margin-top:30px'>اربط حسابك على تيك توك</h2><div class=card><p>الربط إجباري ليحلل التطبيق بيانات حسابك.</p><input id=tu placeholder='@اسم_المستخدم'><button class=b onclick=\"var v=G('tu').value.trim().replace('@','');if(v.length<2)return alert('أدخل اسم الحساب');U.tt=v;sv();render()\">ربط الحساب</button><p class=mu>الجلب التلقائي للأرقام يتطلب موافقة رسمية من تيك توك (Login Kit). حاليًا تُدخل أرقامك يدويًا في صفحة الخدمات.</p></div>")}
+function ads(){var n=U.ad&&U.ad.d===today()?U.ad.n:0;return "<div class=card><h3>📺 شاهد واربح</h3><div class=row><span>إعلان/فيديو 15 ثانية <span class=pts>+"+D.set.ad+"</span><br><span class=mu>"+n+"/"+D.set.adMax+" اليوم</span></span><button class='b s' "+(n>=D.set.adMax?"disabled":"")+" onclick=watch()>شاهد</button></div></div>"}
+function watch(){var d=document.createElement("div");d.className="vip";var t=15;d.innerHTML="<div><div style='font-size:3em'>📺</div><h2 class=gt>مساحة إعلانية تجريبية</h2><h1 id=ct>15</h1></div>";document.body.appendChild(d);var i=setInterval(function(){t--;G("ct").textContent=t;if(t<=0){clearInterval(i);d.remove();U.ad=U.ad&&U.ad.d===today()?U.ad:{d:today(),n:0};U.ad.n++;earn(D.set.ad);note(U,"+"+D.set.ad+" نقطة من مشاهدة إعلان");sv();main()}},1000)}
+function upl(){return "<div class=card><h3>📤 رفع صورة أو فيديو</h3><input type=file id=fu accept='image/*,video/*' onchange=pv(this)><div id=pvw></div><p class=mu>معاينة على جهازك حاليًا؛ الحفظ الدائم يحتاج تخزينًا سحابيًا.</p></div>"}
+function pv(i){var f=i.files[0];if(!f)return;var u=URL.createObjectURL(f);G("pvw").innerHTML=f.type.indexOf("video")==0?"<video class=img controls src='"+u+"'></video>":"<img class=img src='"+u+"'>"}
+var CL=["#e5b92e","#ff5c6c","#4cd68a","#5cc8ff","#c77dff","#ff9f43","#ffffff"];
+function prof(){var can=pd(U)||U.role==="vip",s="<div class=card><h3>🎖️ التخصيص</h3><p class=mu>حساب تيك توك: @"+h(U.tt||"—")+"</p>";
+ s+=can?"<div style='display:flex;gap:8px;flex-wrap:wrap'>"+CL.map(function(c){return "<button onclick=\"U.color='"+c+"';sv();main()\" style='width:34px;height:34px;border-radius:50%;border:2px solid "+(U.color===c?"#fff":"transparent")+";background:"+c+"'></button>"}).join("")+"</div>":"<p class=mu>اشترك شهريًا لتلوين اسمك.</p>";
+ if(U.role==="vip"||isA())s+="<p>صورتك الشخصية:</p><input type=file accept=image/* onchange=\"rs(this.files[0],function(d){U.avatar=d;sv();main()})\">";
+ if(D.gifts.length)s+="<p class=mu>صور هدية من المدير:</p><div style='display:flex;gap:8px;flex-wrap:wrap'>"+D.gifts.map(function(g,i){return "<img class=av style='width:48px;height:48px' src='"+g+"' onclick=\"U.avatar=D.gifts["+i+"];sv();main()\">"}).join("")+"</div>";
+ return s+"</div><div class=card><h3>🔒 الخصوصية</h3><p class=mu>كلمات السر لا تُحفظ نصًا بل بصمة مشفّرة، ولا يرى أحد بريدك أو بياناتك غير المدير.</p></div>"}
+var MP=[500,450,400,300,300,150,150,150,100,100],AP=[200,150,100,90,70,70,70,70,50,50];
+function tp(f,k){return Object.values(D.users).filter(function(u){return u.email!==ADMIN&&u.verified&&!banned(u)&&(u[k]||0)>0&&f(u)}).sort(function(a,b){return (b[k]||0)-(a[k]||0)}).slice(0,10)}
+function board(l,k,P){return l.map(function(u,i){return "<div class=row style='padding:6px 0;border-bottom:1px solid var(--bd)'><span>"+(["🥇","🥈","🥉"][i]||(i+1)+".")+" "+av(u)+" "+nm(u)+"</span><span><span class=pts>"+(u[k]||0)+"</span> <span class=mu>🎁"+P[i]+"</span></span></div>"}).join("")||"<p class=mu>لا بيانات بعد</p>"}
+function rank(){return "<div class=card><h3>🎯 المسابقات</h3>"+(D.cn.map(function(c){var j=c.j.indexOf(U.email)>=0;return "<div class=row style='margin:8px 0'><span>"+(c.k==="week"?"📅 أسبوعية":"🗓️ شهرية")+" — "+h(c.t)+"<br><span class=pts>الجائزة "+c.p+"</span>"+(c.w?" <span class=ok>الفائز: "+h(c.w)+"</span>":"")+"</span>"+(c.w?"":"<button class='b s' "+(j?"disabled":"")+" onclick=\"jn('"+c.id+"')\">"+(j?"مشترك ✓":"شارك")+"</button>")+"</div>"}).join("")||"<p class=mu>لا مسابقات حاليًا</p>")+"</div><div class='card hl'><h3>🏆 ترتيب المشتركين الشهري</h3>"+board(tp(pd,"mpts"),"mpts",MP)+"</div><div class=card><h3>🌍 ترتيب كل المستخدمين</h3>"+board(tp(function(){return 1},"apts"),"apts",AP)+"</div>"}
+function jn(id){D.cn.forEach(function(c){if(c.id===id&&c.j.indexOf(U.email)<0)c.j.push(U.email)});sv();main()}
+function com(){return "<div class=card><textarea id=pt2 placeholder='اكتب منشورًا محترمًا...'></textarea><button class=b onclick=\"var t=G('pt2').value.trim();if(!t)return;D.posts.unshift({id:Date.now(),by:U.email,t:t,d:new Date().toLocaleString('ar')});sv();main()\">نشر</button></div>"+D.posts.map(function(p){var u=D.users[p.by]||{email:p.by};return "<div class=card><div class=row><span>"+av(u)+" "+nm(u)+"</span>"+(isM()||p.by===U.email?"<button class='b o s' onclick=\"D.posts=D.posts.filter(function(x){return x.id!="+p.id+"});sv();main()\">🗑️</button>":"")+"</div><p>"+h(p.t)+"</p><span class=mu>"+p.d+"</span></div>"}).join("")}
+function setRole(e,r){var u=D.users[e];u.role=r;note(u,r?"🎖️ تمت ترقية حسابك: "+RL[r]:"أُلغيت رتبة حسابك");sv();main()}
+function ban(e,d){var u=D.users[e];u.ban=d===-1?-1:d===0?0:Date.now()+d*864e5;note(u,d===0?"✅ رُفع الحظر عن حسابك":"🚫 تم حظر حسابك");sv();main()}
+function gp(e){var n=+prompt("عدد النقاط");if(!n)return;var u=D.users[e];u.pts+=n;note(u,"🎁 هدية "+n+" نقطة من المدير");sv();main()}
+function win(id){var c=D.cn.filter(function(x){return x.id===id})[0];if(!c.j.length)return alert("لا مشاركين");var e=c.j[Math.floor(Math.random()*c.j.length)],u=D.users[e];u.pts+=c.p;c.w=e.split("@")[0];note(u,"🏆 فزت بمسابقة "+c.t+": "+c.p+" نقطة");sv();main()}
+function endm(){if(!confirm("توزيع جوائز الشهر وتصفير الترتيب؟"))return;tp(pd,"mpts").forEach(function(u,i){u.pts+=MP[i];note(u,"🏅 جائزة الترتيب الشهري: "+MP[i]+" نقطة")});tp(function(){return 1},"apts").forEach(function(u,i){u.pts+=AP[i];note(u,"🌍 هدية الترتيب العام: "+AP[i]+" نقطة")});Object.values(D.users).forEach(function(u){var g=u.role==="vip"?500:u.role==="verified"?100:0;if(g){u.pts+=g;note(u,"🎖️ مكافأة الرتبة الشهرية: "+g+" نقطة")}u.mpts=0});D.bc.unshift({t:"🏅 تم توزيع جوائز الشهر!",d:new Date().toLocaleString("ar")});sv();main()}
+function adm(){var s=statCard()+banCard()+(isA()?chCard()+tkCard():"");
+ if(isA()){
+ s+="<div class='card hl'><h3>⚙️ الإعدادات</h3><div class=mu>سعر كل خدمة (نقاط)</div><input type=number id=st1 value="+D.set.price+"><div class=mu>نقاط الإعلان</div><input type=number id=st2 value="+D.set.ad+"><div class=mu>أقصى إعلانات يوميًا</div><input type=number id=st3 value="+D.set.adMax+"><button class=b onclick=\"D.set={price:+G('st1').value||10,ad:+G('st2').value||5,adMax:+G('st3').value||5};sv();alert('تم الحفظ')\">حفظ</button></div>";
+ s+="<div class=card><h3>🎯 مسابقة جديدة</h3><input id=cn1 placeholder='عنوان المسابقة'><input id=cn2 type=number placeholder='الجائزة (نقاط)'><select id=cn3><option value=week>أسبوعية</option><option value=month>شهرية</option></select><button class=b onclick=\"var t=G('cn1').value.trim();if(!t)return;D.cn.unshift({id:'c'+Date.now(),k:G('cn3').value,t:t,p:+G('cn2').value||100,j:[],w:''});D.bc.unshift({t:'🎯 مسابقة جديدة: '+t,d:new Date().toLocaleString('ar')});sv();main()\">نشر</button>"+D.cn.filter(function(c){return !c.w}).map(function(c){return "<div class=row style='margin-top:8px'><span>"+h(c.t)+" ("+c.j.length+")</span><button class='b s' onclick=\"win('"+c.id+"')\">اختر فائزًا</button></div>"}).join("")+"</div>";
+ s+="<div class=card><h3>🏅 الجوائز الشهرية</h3><button class=b onclick=endm()>إنهاء الشهر وتوزيع الجوائز</button><button class='b o' onclick=\"tab='chan';main()\">إضافة مهمة قناة</button><button class='b o' onclick=\"var c='G'+Math.random().toString(36).slice(2,8).toUpperCase();D.codes.push(c);sv();G('nc').innerHTML='الكود: <b class=pts>'+c+'</b>'\">إنشاء كود اشتراك مجاني</button><div id=nc class=mu>أكواد متاحة: "+D.codes.length+"</div><div class=mu>صورة هدية للمشتركين</div><input type=file accept=image/* onchange=\"rs(this.files[0],function(d){D.gifts.push(d);sv();main()})\"></div>"}
+ s+="<div class=card><h3>📢 بث إشعار</h3><input id=bn placeholder='نص الإشعار'><button class='b o' onclick=\"if(G('bn').value){D.bc.unshift({t:'📢 '+G('bn').value,d:new Date().toLocaleString('ar')});sv();alert('أُرسل')}\">إرسال للجميع</button></div><div class=card><h3>👥 المشتركون ("+Object.keys(D.users).length+")</h3>";
+ s+=Object.values(D.users).filter(function(u){return u.email!==ADMIN}).map(function(u){var e=h(u.email);return "<div style='border-bottom:1px solid var(--bd);padding:10px 0'><div class=row><span>"+av(u)+" "+nm(u)+"</span><span class=pts>"+u.pts+"</span></div><div class=mu>"+e+(u.tt?" · 🎵 <a href='https://www.tiktok.com/@"+tk(u)+"' target=_blank>@"+tk(u)+"</a>":" · لم يربط تيك توك")+(banned(u)?" · <span class=bad>محظور</span>":"")+"</div><div style='display:flex;gap:6px;flex-wrap:wrap;margin-top:6px'>"+
+ (isA()?"<select style='width:auto;margin:0' onchange=\"setRole('"+e+"',this.value)\"><option value=''>عادي</option>"+["verified","vip","admin"].map(function(r){return "<option value="+r+(u.role===r?" selected":"")+">"+RL[r]+"</option>"}).join("")+"</select><button class='b o s' onclick=\"gp('"+e+"')\">+نقاط</button>":"")+
+ "<button class='b o s' onclick=\"ban('"+e+"',3)\">حظر 3 أيام</button><button class='b o s' onclick=\"ban('"+e+"',7)\">7 أيام</button><button class='b o s' onclick=\"ban('"+e+"',-1)\">نهائي</button><button class='b s' onclick=\"ban('"+e+"',0)\">رفع</button></div></div>"}).join("")||"<p class=mu>لا مشتركين</p>";
+ return s+"</div>"}
+
+function banCard(){
+ var bl=Object.values(D.users).filter(function(u){return u.email!==ADMIN&&banned(u)});
+ return "<div class='card hl'><h3>🚫 حظر مشترك</h3><input id=bnm placeholder='اسم المشترك أو بريده'><div class=row style='gap:8px'><input id=bt type=number min=1 placeholder='المدة' style='flex:1'><select id=bu style='flex:1'><option value=h>ساعات</option><option value=d selected>أيام</option><option value=p>نهائي (طرد)</option></select></div><input id=bw placeholder='السبب (اختياري)'><button class=b onclick=banNow()>حظر الآن</button>"+(bl.length?"<h3 style='margin-top:10px'>المحظورون حاليًا</h3>"+bl.map(function(u){return "<div class=row style='margin:6px 0'><span>"+nm(u)+"<br><span class=mu>"+(u.ban===-1?"نهائي":"حتى "+new Date(u.ban).toLocaleString("ar"))+"</span></span><button class='b s' onclick=\"ban('"+h(u.email)+"',0)\">رفع</button></div>"}).join(""):"")+"</div>"}
+function banNow(){
+ var q=G("bnm").value.trim().toLowerCase(),u=G("bu").value,n=+G("bt").value;
+ if(!q)return alert("اكتب اسم المشترك");
+ var m=Object.values(D.users).filter(function(x){return x.email!==ADMIN&&(x.email.toLowerCase()===q||x.email.split("@")[0].toLowerCase()===q.replace("@",""))});
+ if(!m.length)return alert("لا يوجد مشترك بهذا الاسم");
+ if(m.length>1)return alert("يوجد أكثر من مشترك بهذا الاسم، اكتب البريد كاملًا");
+ if(u!=="p"&&!(n>0))return alert("أدخل مدة الحظر");
+ var x=m[0];x.ban=u==="p"?-1:Date.now()+n*(u==="h"?36e5:864e5);x.banWhy=G("bw").value.trim();
+ note(x,"🚫 تم حظر حسابك"+(x.banWhy?": "+x.banWhy:""));sv();alert("تم حظر "+x.email.split("@")[0]);main()}
+
+function tk(u){return (u.tt||"").replace(/[^\w.]/g,"")}
+function home(){return tikCard()+home0()}
+function tikCard(){return "<div class='card hl'><h3>🎵 حساب تيك توك</h3><p class=mu>أدخل اسم المستخدم لكي يتعرف التطبيق على حسابك.</p><input id=tt2 placeholder='@username' value='"+tk(U)+"'><button class=b onclick=saveTT()>حفظ الحساب</button>"+(U.tt?"<button class='b o' onclick=\"window.open('https://www.tiktok.com/@"+tk(U)+"','_blank')\">فتح حسابي على تيك توك</button>":"")+"</div>"}
+function saveTT(){var v=G("tt2").value.trim().replace("@","");if(!/^[\w.]{2,24}$/.test(v))return alert("اسم مستخدم غير صحيح");U.tt=v;note(U,"🎵 تم ربط حساب تيك توك @"+v);main()}
+function quests(){var s=quests0();if(D.tasks.length)s+="<div class=card><h3>⭐ مهام من المدير</h3>"+D.tasks.map(function(t,i){var d=U.done[t.id]===today();return "<div class=row style='margin:10px 0'><span>"+h(t.name)+" <span class=pts>+"+t.pts+"</span></span><button class='b s' "+(d?"disabled":"")+" onclick=\"dtask("+i+")\">"+(d?"تم ✓":"أنجز")+"</button></div>"}).join("")+"</div>";return s}
+function dtask(i){var t=D.tasks[i];if(t.url&&/^https?:/.test(t.url))window.open(t.url,"_blank");U.done[t.id]=today();earn(t.pts);note(U,"+"+t.pts+" نقطة: "+t.name);sv();main()}
+function statCard(){var u=Object.values(D.users).filter(function(x){return x.email!==ADMIN});return "<div class='card hl'><h3>⚙️ لوحة الإدارة</h3><p class=mu>👥 "+u.length+" مشترك · 💎 "+u.filter(pd).length+" مدفوع · 🚫 "+u.filter(banned).length+" محظور · 🎟️ "+D.codes.length+" كود · 💬 "+D.posts.length+" منشور</p></div>"}
+function chCard(){return "<div class=card><h3>📺 مهمة قناة جديدة</h3><input id=pn placeholder='الاسم'><input id=pu placeholder='الرابط'><input id=pp type=number placeholder='النقاط'><select id=pt><option value=follow>اشتراك</option><option value=like>إعجاب</option></select><button class=b onclick=addp()>إضافة</button></div>"}
+function tkCard(){return "<div class=card><h3>⭐ مهمة جديدة للمشتركين</h3><input id=tk_n placeholder='اسم المهمة'><input id=tk_u placeholder='رابط (اختياري)'><input id=tk_p type=number placeholder='النقاط'><button class=b onclick=addt()>إضافة</button>"+D.tasks.map(function(t,i){return "<div class=row style='margin-top:6px'><span>"+h(t.name)+" +"+t.pts+"</span><button class='b o s' onclick=\"D.tasks.splice("+i+",1);sv();main()\">حذف</button></div>"}).join("")+"</div>"}
+function addt(){var n=G("tk_n").value.trim();if(!n)return alert("اكتب اسم المهمة");D.tasks.push({id:"t"+Date.now(),name:n,url:G("tk_u").value.trim(),pts:+G("tk_p").value||10});D.bc.unshift({t:"⭐ مهمة جديدة: "+n,d:new Date().toLocaleString("ar")});sv();main()}
+
+function me(){return me0()+"<div class=card><h3>🔐 الأمان والحساب</h3><input id=op type=password placeholder='الرقم السري الحالي'><input id=np type=password placeholder='الرقم السري الجديد (6 خانات فأكثر)'><button class='b o' onclick=chpw()>تغيير الرقم السري</button><button class='b o' onclick=delacc()>🗑️ حذف حسابي نهائيًا</button></div><div class=card><h3>📲 تثبيت على هاتفك</h3><p class=mu>من متصفح Chrome: القائمة ⋮ ثم «إضافة إلى الشاشة الرئيسية» ليعمل كتطبيق.</p></div><div class=card><h3>📜 الخصوصية والشروط</h3><p class=mu>بياناتك لا تُباع ولا تُعرض لأحد. بريدك ورقمك السري لا يظهران لغيرك، ويمكنك حذف حسابك في أي وقت. الألفاظ المسيئة تعرّض حسابك للحظر. النقاط لا تُستبدل بمال.</p></div>"}
+function chpw(){if(hash(G("op").value)!==U.pw)return alert("الرقم السري الحالي خاطئ");if(G("np").value.length<6)return alert("6 خانات على الأقل");U.pw=hash(G("np").value);note(U,"🔐 تم تغيير رقمك السري");sv();alert("تم ✅")}
+function delacc(){if(!confirm("سيُحذف حسابك ونقاطك نهائيًا. متأكد؟"))return;delete D.users[U.email];D.me="";sv();render()}
+
+render();
+</script>
+</body>
+</html>
