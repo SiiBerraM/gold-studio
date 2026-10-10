@@ -43,7 +43,7 @@ pre{white-space:pre-wrap;font-family:inherit;margin:6px 0}
 <div class="w" id="app"></div>
 <script>
 var ADMIN="berramouhcine13@gmail.com",TT="https://www.tiktok.com/@berramouhcine?_r=1&_t=ZS-9ACFax6ltXm";
-var SECRET="GS-berra-9x2k7",FB_URL="",NOTIFY_URL="";
+var SECRET="GS-berra-9x2k7",FB_URL="https://gold-studio-bd5d4-default-rtdb.firebaseio.com",NOTIFY_URL="";
 var TT_CLIENT_KEY="sbawcb5c5puhwanv8x",TT_API="https://tight-darkness-f4d5.berramouhcine13.workers.dev",TT_REDIRECT="https://siiberram.github.io/gold-studio/";
 var D={users:{},me:"",codes:[],partners:[{id:"p1",type:"follow",name:"قناة صاحب التطبيق",url:TT,pts:25},{id:"p2",type:"like",name:"أعجب بفيديو مقترح",url:TT,pts:10}],bc:[],cn:[],posts:[],gifts:[],set:{price:10,ad:5,adMax:5}};
 try{var x=JSON.parse(localStorage.getItem("gs")||"null");if(x)D=x}catch(e){}
@@ -253,8 +253,8 @@ function genC(){var d=+prompt("مدة الاشتراك بالأيام","30")||30
 function payPP(){window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(ADMIN)+"&item_name="+encodeURIComponent("Gold Studio monthly")+"&amount=3.00&currency_code=USD&no_shipping=1","_blank")}
 function proof(){notifyOwner("طلب تفعيل اشتراك",U.email);location.href="mailto:"+ADMIN+"?subject="+encodeURIComponent("إثبات دفع جولد ستوديو")+"&body="+encodeURIComponent("بريد حسابي: "+U.email+"\nرقم عملية PayPal: ")}
 function payCard(){return "<div class=card><h3>💎 اشتراك / تجديد (3$ شهريًا)</h3><button class=b onclick=payPP()>💳 ادفع عبر PayPal</button><button class=b onclick=proof()>✉️ أرسل إثبات الدفع للمدير</button><p class=mu>يصلك كود التفعيل بعد التحقق من الدفع.</p></div>"}
-function notifyOwner(t,m){try{D.ev=D.ev||[];var e={t:t,m:m,d:new Date().toLocaleString("ar")};D.ev.unshift(e);D.ev=D.ev.slice(0,100);sv();if(NOTIFY_URL)fetch(NOTIFY_URL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({event:t,details:m,time:e.d})}).catch(function(){});if(FB_URL)fetch(FB_URL+"/events.json",{method:"POST",body:JSON.stringify(e)}).catch(function(){})}catch(x){}}
-function pullEv(){if(!FB_URL||!isA())return;fetch(FB_URL+"/events.json").then(function(r){return r.json()}).then(function(o){var a=Object.values(o||{}).reverse().slice(0,100);if(JSON.stringify(a)!==JSON.stringify(D.ev)){D.ev=a;sv();if(tab==="adm")main()}}).catch(function(){})}
+function notifyOwner(t,m){try{D.ev=D.ev||[];var e={t:t,m:m,d:new Date().toLocaleString("ar")};D.ev.unshift(e);D.ev=D.ev.slice(0,100);sv();if(NOTIFY_URL)fetch(NOTIFY_URL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({event:t,details:m,time:e.d})}).catch(function(){});}catch(x){}}
+function pullEv(){return;fetch(FB_URL+"/events.json").then(function(r){return r.json()}).then(function(o){var a=Object.values(o||{}).reverse().slice(0,100);if(JSON.stringify(a)!==JSON.stringify(D.ev)){D.ev=a;sv();if(tab==="adm")main()}}).catch(function(){})}
 function evCard(){var a=D.ev||[];return "<div class='card hl'><h3>🔔 سجل الأحداث</h3>"+(a.slice(0,15).map(function(e){return "<div style='border-bottom:1px solid var(--bd);padding:6px 0'><b>"+h(e.t)+"</b><br><span class=mu>"+h(e.m)+" · "+e.d+"</span></div>"}).join("")||"<p class=mu>لا أحداث بعد</p>")+"</div>"}
 function pullPosts(){if(!FB_URL)return;fetch(FB_URL+"/posts.json").then(function(r){return r.json()}).then(function(a){a=a||[];if(!Array.isArray(a))a=Object.values(a);if(JSON.stringify(a)!==JSON.stringify(D.posts)){D.posts=a;sv();var f=document.activeElement;if(tab==="com"&&!(f&&f.tagName==="TEXTAREA"&&f.value))main()}}).catch(function(){})}
 function pushPosts(){if(FB_URL)fetch(FB_URL+"/posts.json",{method:"PUT",body:JSON.stringify(D.posts.slice(0,100))}).catch(function(){})}
