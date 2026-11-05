@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><link rel="icon" href="icon.png?v=1"><link rel="apple-touch-icon" href="icon.png?v=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>جولد ستوديو — محلل تيك توك</title>
+<title>Gold Studio — محلل تيك توك</title>
 <style>
 :root{--bg:#0a0a0a;--card:#16140e;--tx:#f6efd8;--mu:#a39a7c;--g:#e5b92e;--g2:#a8801a;--bd:#3a3015;--ok:#4cd68a;--bad:#ff5c6c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
@@ -37,10 +37,48 @@ nav button.on{color:var(--g)}
 .tag{display:inline-block;border:1px solid var(--g2);color:var(--g);border-radius:20px;padding:0 9px;font-size:.78em}
 .img{width:100%;border-radius:12px;border:1px solid var(--g2);background:#000;margin-top:8px}
 pre{white-space:pre-wrap;font-family:inherit;margin:6px 0}
-.av{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;background:var(--g2);color:#000;font-weight:800;font-size:.8em}</style>
+.av{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;background:var(--g2);color:#000;font-weight:800;font-size:.8em}
+/* ---- Gold Studio ---- */
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(10,10,10,.35),rgba(10,10,10,.65)),url("gold-studio-bg.jpg") center top/cover no-repeat,#0a0a0a}
+.gs-header{text-align:center;padding:22px 12px 10px;border-bottom:1px solid var(--bd,#3a3015);margin:0 auto 8px;max-width:560px}
+.gs-logo{width:96px;height:96px;border-radius:22px;border:1px solid var(--g2,#a8801a);box-shadow:0 6px 22px #000a,0 0 0 3px #0008;display:block;margin:0 auto 10px}
+.gs-header h1{font-size:2.2rem;letter-spacing:.5px;margin:0}
+.gs-header .gs-sub{color:var(--mu,#a39a7c);font-size:.95rem;margin:4px 0 0}
+.gs-header .gs-url{display:inline-block;margin-top:6px;color:var(--g,#e5b92e);font-size:.85rem;text-decoration:none;direction:ltr}
+.gs-nav{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:10px}
+.gs-nav a,.gs-footer a{color:var(--g,#e5b92e);text-decoration:none;font-weight:600}
+.gs-nav a:hover,.gs-footer a:hover{text-decoration:underline}
+.gs-footer{max-width:560px;margin:24px auto 100px;padding:18px 12px;border-top:1px solid var(--bd,#3a3015);text-align:center;color:var(--mu,#a39a7c);font-size:.9rem}
+.gs-footer .gs-links{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:8px 0}
+.gs-footer .gs-brand{color:var(--tx,#f6efd8);font-weight:700}
+.gs-footer .gs-disc{font-size:.8rem;margin-top:6px}
+</style>
+<!-- gold-studio-patch -->
+<meta name="application-name" content="Gold Studio">
+<meta name="description" content="Gold Studio — Utilities app for analyzing TikTok content. منصة أدوات لتحليل محتوى تيك توك.">
+<link rel="canonical" href="https://siiberram.github.io/gold-studio/">
+<meta property="og:site_name" content="Gold Studio">
+<meta property="og:title" content="Gold Studio">
+<meta property="og:url" content="https://siiberram.github.io/gold-studio/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://siiberram.github.io/gold-studio/gold-studio-icon-512.png">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" sizes="64x64" href="gold-studio-icon-64.png">
+<link rel="apple-touch-icon" href="gold-studio-icon-192.png">
 </head>
 <body>
-<div class="w" id="app"></div>
+<div class="w" id="app">
+<header class="gs-header">
+  <img class="gs-logo" src="gold-studio-icon-192.png" width="96" height="96" alt="Gold Studio logo">
+  <h1 class="gt">Gold Studio</h1>
+  <p class="gs-sub">محلل تيك توك — TikTok Analyzer</p>
+  <a class="gs-url" href="https://siiberram.github.io/gold-studio/">https://siiberram.github.io/gold-studio</a>
+  <nav class="gs-nav" aria-label="Legal">
+    <a href="privacy.html">Privacy Policy — سياسة الخصوصية</a>
+    <a href="terms.html">Terms of Service — شروط الخدمة</a>
+  </nav>
+</header>
+</div>
 <script>
 var ADMIN="berramouhcine13@gmail.com",TT="https://www.tiktok.com/@berramouhcine?_r=1&_t=ZS-9ACFax6ltXm";
 var SECRET="GS-berra-9x2k7",FB_URL="https://gold-studio-bd5d4-default-rtdb.firebaseio.com",NOTIFY_URL="";
@@ -284,5 +322,19 @@ function linkCard(){
 ttCallback();
 render();
 </script>
+
+<footer class="gs-footer">
+  <div class="gs-brand">Gold Studio</div>
+  <div><a href="https://siiberram.github.io/gold-studio/" style="direction:ltr;display:inline-block">https://siiberram.github.io/gold-studio</a></div>
+  <div class="gs-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <span>•</span>
+    <a href="terms.html">Terms of Service</a>
+    <span>•</span>
+    <a href="mailto:berramouhcine13@gmail.com">Contact</a>
+  </div>
+  <div>© 2026 Gold Studio. All rights reserved.</div>
+  <div class="gs-disc">Gold Studio is not affiliated with, endorsed by, or sponsored by TikTok. TikTok is a trademark of its respective owner.</div>
+</footer>
 </body>
 </html>
