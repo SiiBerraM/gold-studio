@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gold Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070a;--card:#121217;--card2:#18181f;--line:#2a2418;--gold:#d4af37;--gold2:#f3d98b;--txt:#f4efe2;--mut:#9b947f;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:radial-gradient(circle at 50% -10%,#2a210b 0,var(--bg) 55%) fixed;color:var(--txt);font-family:Cairo,Tahoma,Arial,sans-serif;min-height:100vh}
+.gold{background:linear-gradient(135deg,var(--gold2),var(--gold) 50%,#9a7b1c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{width:100%;padding:13px;border:0;border-radius:14px;font:800 16px Cairo,sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,#9a7b1c);color:#1a1405;box-shadow:0 6px 24px #d4af3733}
+.btn:active{transform:scale(.98)}
+input,select,textarea{width:100%;padding:13px 14px;margin-bottom:12px;background:#0d0d11;border:1px solid var(--line);border-radius:12px;color:var(--txt);font:400 15px Cairo,sans-serif;outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.hide{display:none!important}
+/* auth */
+#auth{max-width:420px;margin:0 auto;padding:36px 20px}
+.logo{text-align:center;margin-bottom:22px}
+.logo i{display:inline-grid;place-items:center;width:68px;height:68px;border-radius:20px;border:1.5px solid var(--gold);font:800 26px Cairo;font-style:normal;box-shadow:0 0 34px #d4af3744}
+.logo h1{font-size:25px;margin-top:10px}
+.logo p{color:var(--mut);font-size:13px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px}
+.tabs{display:flex;background:#0d0d11;border-radius:14px;padding:4px;margin-bottom:16px}
+.tabs button{flex:1;padding:10px;border:0;border-radius:11px;background:none;color:var(--mut);font:600 15px Cairo;cursor:pointer}
+.tabs button.on{background:var(--card2);color:var(--gold2)}
+.or{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;margin:18px 0 12px}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.soc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.soc button{padding:12px 4px;border-radius:13px;border:1px solid var(--line);background:var(--card2);color:var(--txt);font:600 13px Cairo;cursor:pointer}
+.soc button:hover{border-color:var(--gold)}
+.soc b{display:block;font-size:19px;color:var(--gold2)}
+/* app */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:12px;padding:12px 16px;background:#07070aee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header h2{flex:1;font-size:18px}
+.ham{width:42px;height:42px;border-radius:12px;border:1px solid var(--gold);background:none;color:var(--gold2);font-size:22px;cursor:pointer}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),#9a7b1c);color:#1a1405;font-weight:800}
+main{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+.hero{padding:22px;border-radius:22px;border:1px solid var(--gold);background:linear-gradient(135deg,#241c07,#111116);margin-bottom:18px}
+.hero h3{font-size:22px;margin-bottom:6px}.hero p{color:var(--mut);font-size:14px;margin-bottom:14px}
+.hero .btn{width:auto;padding:11px 26px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer;transition:.2s}
+.tool:hover{border-color:var(--gold);transform:translateY(-2px)}
+.tool b{display:block;font-size:26px;margin-bottom:6px}.tool span{font-weight:600}.tool small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.stats{display:flex;gap:10px;margin-bottom:18px}
+.stats div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.stats strong{display:block;font-size:22px}.stats small{color:var(--mut);font-size:12px}
+h4{margin:6px 0 12px;font-size:17px}
+.out{white-space:pre-wrap;background:#0d0d11;border:1px dashed var(--gold);border-radius:14px;padding:14px;margin-top:14px;line-height:1.9;font-size:14px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.item small{color:var(--mut)}
+/* drawer */
+#ov{position:fixed;inset:0;background:#000a;z-index:20;opacity:0;pointer-events:none;transition:.25s}
+#dr{position:fixed;top:0;bottom:0;right:0;width:min(82%,320px);z-index:21;background:linear-gradient(180deg,#14110a,#0a0a0d);border-left:1px solid var(--gold);padding:calc(22px + env(safe-area-inset-top,0px)) 16px 20px;transform:translateX(105%);transition:.3s;overflow-y:auto;box-shadow:-10px 0 40px #000}
+body.open #ov{opacity:1;pointer-events:auto}body.open #dr{transform:none}
+#dr .logo{margin-bottom:12px}#dr .logo i{width:52px;height:52px;font-size:20px}
+#dr a{display:flex;gap:12px;align-items:center;padding:13px 12px;border-radius:13px;color:var(--txt);text-decoration:none;font-weight:600;cursor:pointer}
+#dr a:hover,#dr a.on{background:#d4af3718;color:var(--gold2)}
+#dr hr{border:0;border-top:1px solid var(--line);margin:10px 0}
+.lg{width:78px;height:78px;border-radius:50%;box-shadow:0 0 34px #d4af3766;display:block;margin:0 auto}
+#dr .lg{width:54px;height:54px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(#07070ad9,#07070af2),var(--bgi) center top/cover no-repeat}
+.sig{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));right:12px;font:600 11px Cairo,sans-serif;z-index:30;pointer-events:none}
+.admb{display:inline-block;padding:7px 16px;border-radius:30px;border:1px solid var(--gold);background:linear-gradient(135deg,#3a2c08,#14110a);font-weight:800;margin-bottom:12px;animation:gl 3s infinite alternate}
+@keyframes gl{to{box-shadow:0 0 22px #d4af3788}}
+.pay{display:block;text-align:center;text-decoration:none;margin-top:12px}
+canvas,video{max-width:100%;border-radius:14px;border:1px solid var(--line);margin:10px 0}
+label{display:block;font-size:13px;color:var(--mut);margin:6px 0 2px}
+input[type=range]{padding:0;height:24px}.row{display:flex;gap:8px}.row>*{flex:1}
+.uc{display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:4px;border-radius:18px;border:1px solid var(--gold);background:linear-gradient(135deg,#2a2008,#121216)}
+#dr .uc .lg{margin:0;width:54px;height:54px;flex:none}
+.bdg{display:inline-block;margin-top:3px;font-size:11px;padding:2px 10px;border-radius:20px;background:#d4af3722;color:var(--gold2)}
+.sec{font-size:11px;color:var(--mut);margin:14px 12px 4px;letter-spacing:1px}
+#dr a i{font-style:normal;width:26px;text-align:center}
+.pl{margin-inline-start:auto;font-size:9px;font-style:normal;padding:2px 7px;border-radius:8px;background:linear-gradient(135deg,var(--gold2),#9a7b1c);color:#1a1405;font-weight:800}
+.tool .pl{float:left}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--mut);margin:4px 0 12px}.chk input{width:auto;margin:3px 0 0}.chk a{color:var(--gold2);text-decoration:underline;cursor:pointer}
+#tm{position:fixed;inset:0;z-index:40;background:#000d;display:flex;align-items:center;justify-content:center;padding:14px}
+.tb{background:var(--card);border:1px solid var(--gold);border-radius:20px;max-width:560px;width:100%;max-height:88vh;display:flex;flex-direction:column;padding:18px}
+.tt{overflow-y:auto;font-size:13.5px;line-height:1.9;margin:10px 0}.tt h5{color:var(--gold2);font-size:14px;margin:12px 0 2px}
+.plan{border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:14px;background:var(--card2);text-align:right}.plan.vip{border-color:var(--gold);background:linear-gradient(135deg,#2a2008,#121216);box-shadow:0 0 24px #d4af3733}.plan h4{margin:0 0 4px}.plan ul{margin:6px 18px;font-size:13px;color:var(--mut)}
+#wl{position:fixed;inset:0;z-index:50;background:radial-gradient(circle,#2a2008ee,#000f);display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+.wb{max-width:420px;animation:pop .8s}@keyframes pop{from{opacity:0;transform:scale(.8)}}
+.crown{font-size:72px;animation:fl 2.5s infinite alternate}@keyframes fl{to{transform:translateY(-10px) rotate(-4deg);filter:drop-shadow(0 0 20px #d4af37)}}
+.spk{font-size:26px;letter-spacing:10px;margin:14px;animation:tw 1.5s infinite alternate}@keyframes tw{to{opacity:.4}}
+main{padding-bottom:130px!important}
+#pb{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(30px + env(safe-area-inset-bottom,0px));z-index:15;display:flex;gap:4px;padding:6px;border-radius:26px;background:#101014ee;border:1px solid var(--gold);backdrop-filter:blur(10px);box-shadow:0 8px 30px #000}
+#pb button{border:0;background:none;font-size:21px;width:48px;height:42px;border-radius:16px;cursor:pointer}#pb button:active{background:#d4af3733}
+.toast{position:fixed;top:calc(74px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1405;padding:8px 18px;border-radius:20px;z-index:60;font-weight:700;font-size:14px}
+.item button{background:none;border:0;font-size:18px;cursor:pointer}
+.bar{height:10px;border-radius:8px;background:#0d0d11;border:1px solid var(--line);overflow:hidden;margin:8px 0 12px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:.4s}
+.out.hide+.vlt{display:none!important}
+#bc{position:absolute;top:-6px;left:-6px;background:#e53935;color:#fff;border-radius:10px;font:700 11px Cairo;padding:1px 6px;font-style:normal}
+.out.hide+.vlt+.vlt{display:none!important}
+</style>
+</head>
+<body>
+
+<section id="auth"><select class="ls" onchange="setLang(this.value)" style="width:auto;margin:0 0 10px"></select>
+  <div class="logo"><img class="lg" alt="Gold Studio" src="icon.png"><h1 class="gold">Gold Studio</h1><p>استوديو صناعة المحتوى بالذكاء الاصطناعي</p></div>
+  <div class="box">
+    <div class="tabs"><button id="tl" class="on" onclick="tab('l')">تسجيل الدخول</button><button id="ts" onclick="tab('s')">حساب جديد</button></div>
+    <div id="fs" class="hide"><input id="nm" placeholder="الاسم الكامل" autocomplete="name"></div>
+    <input id="em" type="email" placeholder="البريد الإلكتروني" autocomplete="email">
+    <input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+    <label class="chk"><input type="checkbox" id="ag"><span>أوافق على <a onclick="terms(1)">الشروط والأحكام وسياسة الخصوصية</a></span></label><p id="agm" class="hide" style="color:#e57373;font-size:13px;margin-bottom:8px">يجب الموافقة على الشروط للمتابعة.</p>
+<button class="btn" id="go" onclick="enter()">دخول</button>
+    <div class="or">أو تابع عبر</div>
+    <div class="soc">
+      <button onclick="enter('Google')"><b>G</b>Google</button>
+      <button onclick="enter('TikTok')"><b>♪</b>TikTok</button>
+      <button onclick="enter('Facebook')"><b>f</b>Facebook</button>
+    </div>
+  </div>
+</section>
+
+<div id="app" class="hide">
+  <header><button class="ham" onclick="menu(1)" aria-label="القائمة">☰</button><h2 class="gold" id="ttl">الرئيسية</h2><button class="ham" id="bell" onclick="go('nt')" style="position:relative">🔔<i id="bc" class="hide">0</i></button><div class="av" id="av">S</div></header>
+  <main>
+    <section id="v-home">
+      <div class="hero"><div id="adm" class="admb hide">👑 المدير العام · <span class="gold">Sii Mouhcine Berra</span></div><h3 class="gold">أهلاً <span id="who">بك</span> ✨</h3><p>ابدأ صناعة محتوى فاخر في ثوانٍ: سكربتات، أفكار، عناوين ومنشورات.</p><button class="btn" onclick="go('create')">ابدأ الإنشاء</button></div>
+      <div class="stats"><div><strong class="gold" id="n1">0</strong><small>محتوى منشأ</small></div><div><strong class="gold">15</strong><small>أدوات</small></div><div><strong class="gold">∞</strong><small>مجاني</small></div></div>
+      <h4>الأدوات</h4>
+      <div class="grid">
+        <div class="tool" onclick="go('create','سكربت فيديو')"><b>🎬</b><span>سكربت فيديو</span><small>TikTok / Reels / YouTube</small></div>
+        <div class="tool" onclick="go('create','منشور')"><b>✍️</b><span>منشور اجتماعي</span><small>نص جاهز للنشر</small></div>
+        <div class="tool" onclick="go('create','عناوين')"><b>🔥</b><span>عناوين جذابة</span><small>10 عناوين فورية</small></div>
+        <div class="tool" onclick="go('vid')"><em class="pl">PRO</em><b>🎬</b><span>صناعة الفيديو</span><small>ولّد فيديو بالذكاء الاصطناعي</small></div><div class="tool" onclick="go('song')"><em class="pl">PRO</em><b>🎵</b><span>استوديو الأغاني</span><small>كلمات + ربط Suno</small></div><div class="tool" onclick="go('img')"><em class="pl">PRO</em><b>🖼️</b><span>استوديو الصور</span><small>توليد من الوصف</small></div><div class="tool" onclick="go('ed')"><em class="pl">PRO</em><b>🎞️</b><span>محرر الوسائط</span><small>قص وفلاتر وتحميل</small></div><div class="tool" onclick="go('ideas')"><b>💡</b><span>بنك الأفكار</span><small>أفكار يومية</small></div><div class="tool" onclick="go('hook')"><b>🔥</b><span>مولّد الهوكات</span><small>أول 3 ثوانٍ تخطف المشاهد</small></div><div class="tool" onclick="go('chal')"><b>📅</b><span>تحدي 30 يوماً</span><small>خطة نمو يومية</small></div><div class="tool" onclick="go('pts')"><b>🎯</b><span>النقاط والمهام</span><small>اربح نقاطاً يومياً</small></div><div class="tool" onclick="go('gal')"><b>🖼️</b><span>معرض الأعمال</span><small>إبداعات المشتركين</small></div><div class="tool" onclick="go('apps')"><em class="pl pv">VIP</em><b>🧩</b><span>تطبيقاتنا</span><small>تحميل مجاني لـ VIP</small></div><div class="tool" onclick="go('sub')" style="border-color:var(--gold)"><b>💎</b><span>اشتراك VIP</span><small>أعلى خطة · 5$ شهرياً</small></div><div class="tool" onclick="go('me')"><b>👤</b><span>حسابي</span><small>اشتراكي وأعمالي</small></div>
+      </div>
+    </section>
+
+    <section id="v-create" class="hide">
+      <h4>استوديو الإنشاء</h4>
+      <select id="ty"><option value="سكربت فيديو">سكربت فيديو</option><option value="منشور">منشور</option><option value="عناوين">عناوين</option></select>
+      <input id="tp" placeholder="موضوع المحتوى (مثال: رواية خيال علمي)">
+      <select id="tn"><option>فاخر وهادئ</option><option>حماسي</option><option>درامي</option><option>تعليمي</option></select>
+      <button class="btn" onclick="gen()">✨ أنشئ المحتوى</button>
+      <div class="out hide" id="out"></div>
+      <button class="btn hide" id="cp" style="margin-top:10px;background:var(--card2);color:var(--gold2);box-shadow:none;border:1px solid var(--gold)" onclick="navigator.clipboard&&navigator.clipboard.writeText(out.textContent);this.textContent='تم النسخ ✓'">نسخ النص</button>
+    </section>
+
+    <section id="v-ideas" class="hide">
+      <h4>بنك الأفكار</h4>
+      <div id="idl"></div><button class="btn" onclick="ideas()">🎲 أفكار جديدة</button>
+    </section>
+
+    <section id="v-lib" class="hide"><h4>مكتبتي</h4><div id="ll"><p style="color:var(--mut)">لا يوجد محتوى محفوظ بعد.</p></div><h4 style="margin-top:18px">⭐ الخزنة</h4><div id="vl"></div></section>
+
+    <section id="v-set" class="hide">
+      <h4>الإعدادات</h4>
+      <input id="sn" placeholder="اسم الحساب" oninput="setName(this.value)">
+      <div class="item"><span>الخطة</span><span class="gold">مجانية بالكامل ♾️</span></div>
+      <div class="item"><span>الإصدار</span><small>Gold Studio 1.0</small></div>
+      <button class="btn" onclick="out_()">تسجيل الخروج</button>
+    </section>
+  <section id="v-song" class="hide"><h4>🎵 استوديو الأغاني</h4><input id="sg" placeholder="فكرة الأغنية">
+<div class="row"><select id="sgg"><option>ملحمي سينمائي</option><option>راب</option><option>بوب</option><option>شعبي</option><option>أنشودة</option></select><select id="sgl"><option>العربية</option><option>English</option><option>Français</option></select></div>
+<button class="btn" onclick="ai('song')">🎤 اكتب الأغنية</button><div class="out hide" id="o-song"></div>
+<a id="lk-song" class="btn pay hide" target="_blank" rel="noopener" href="https://suno.com">📋 انسخ الكلمات وافتح Suno</a></section>
+<section id="v-img" class="hide"><h4>🖼️ استوديو الصور</h4><input id="ig" placeholder="وصف الصورة">
+<select id="igs"><option>سينمائي</option><option>غلاف رواية</option><option>شخصية خيالية</option><option>فخم ذهبي</option></select>
+<button class="btn" onclick="ai('img')">🎨 جهّز الوصف الاحترافي</button><div class="out hide" id="o-img"></div>
+<a id="lk-img" class="btn pay hide" target="_blank" rel="noopener">🖼️ ولّد الصورة الآن</a></section>
+<section id="v-ed" class="hide"><h4>🎞️ محرر الوسائط</h4><input type="file" id="fi" accept="image/*,video/*" onchange="load(this)">
+<canvas id="cv" class="hide"></canvas><video id="vd" class="hide" controls playsinline></video>
+<div id="ctl" class="hide"><label>السطوع</label><input type="range" id="b" min="50" max="150" value="100" oninput="draw()"><label>التباين</label><input type="range" id="c" min="50" max="150" value="100" oninput="draw()"><label>التشبع</label><input type="range" id="s" min="0" max="200" value="100" oninput="draw()"><label>قص من اليسار</label><input type="range" id="cl" min="0" max="45" value="0" oninput="draw()"><label>قص من اليمين</label><input type="range" id="cr" min="0" max="45" value="0" oninput="draw()"><label>قص من الأعلى</label><input type="range" id="ct" min="0" max="45" value="0" oninput="draw()"><label>قص من الأسفل</label><input type="range" id="cb" min="0" max="45" value="0" oninput="draw()">
+<input id="tx" placeholder="أضف نصاً على الصورة" oninput="draw()" style="margin-top:10px">
+<div class="row"><button class="btn" onclick="rot()">⟳ تدوير</button><button class="btn" onclick="dl()">⬇ تحميل</button></div></div></section>
+<section id="v-sub" class="hide"><div class="hero"><h3 class="gold">💎 Sii Premium</h3><p id="subst"></p><p>اختر خطتك لفتح استوديو الأغاني والصور والفيديو والمحرر.</p>
+<div class="plan"><h4 class="gold">🆓 مجاني</h4><ul><li>✨ استوديو الإنشاء وبنك الأفكار</li><li>🔥 مولّد الهوكات</li><li>📅 تحدي 30 يوماً</li><li>⭐ خزنة بـ 5 عناصر</li><li>🎯 نقاط ومهام يومية</li></ul></div>
+<div class="plan"><h4 class="gold">⭐ Premium</h4><ul><li>استوديو الأغاني والصور والفيديو</li><li>محرر الوسائط بلا قيود</li></ul><div class="row"><a class="btn pay" target="_blank" rel="noopener" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick-subscriptions&amp;business=berramouhcine13%40gmail.com&amp;item_name=Gold+Studio+Premium+Monthly&amp;a3=3.00&amp;p3=1&amp;t3=M&amp;src=1&amp;currency_code=USD">3$ / شهر</a><a class="btn pay" target="_blank" rel="noopener" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick-subscriptions&amp;business=berramouhcine13%40gmail.com&amp;item_name=Gold+Studio+Premium+Annual&amp;a3=26.00&amp;p3=1&amp;t3=Y&amp;src=1&amp;currency_code=USD">26$ / سنة</a></div></div>
+<div class="plan vip"><h4 class="gold">💎 VIP</h4><ul><li>كل ميزات Premium</li><li>شارة VIP الذهبية</li><li>أولوية في المزايا الجديدة</li></ul><div class="row"><a class="btn pay" target="_blank" rel="noopener" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick-subscriptions&amp;business=berramouhcine13%40gmail.com&amp;item_name=Gold+Studio+VIP+Monthly&amp;a3=5.00&amp;p3=1&amp;t3=M&amp;src=1&amp;currency_code=USD">5$ / شهر</a><a class="btn pay" target="_blank" rel="noopener" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick-subscriptions&amp;business=berramouhcine13%40gmail.com&amp;item_name=Gold+Studio+VIP+Annual&amp;a3=36.00&amp;p3=1&amp;t3=Y&amp;src=1&amp;currency_code=USD">36$ / سنة</a></div></div>
+<input id="rc" placeholder="كود الاشتراك (SII-XXXX-XXXX)" style="margin-top:16px"><button class="btn" onclick="redeem()">تفعيل الكود</button><p id="rm" style="margin-top:8px"></p></div></section>
+<section id="v-adm" class="hide"><h4>👑 لوحة المدير</h4><div class="row"><button class="btn" onclick="mk(30,'pro')">⭐ Premium شهري</button><button class="btn" onclick="mk(365,'pro')">⭐ Premium سنوي</button></div>
+<div class="row" style="margin-top:8px"><button class="btn" onclick="mk(30,'vip')">💎 VIP شهري</button><button class="btn" onclick="mk(365,'vip')">💎 VIP سنوي</button></div>
+<div class="out" id="nc" style="text-align:center;font-size:20px;letter-spacing:2px">—</div><h4 style="margin-top:18px">آخر الأكواد</h4><div id="cl2"></div>
+<h4 style="margin-top:22px">💰 آخر الاشتراكات المفعّلة</h4><div id="usl"></div>
+<h4 style="margin-top:22px">📢 إشعار عام لكل المستخدمين</h4><input id="xb" placeholder="نص الإشعار"><button class="btn" onclick="bcast()">إرسال للجميع</button>
+<h4 style="margin-top:22px">👥 إدارة المستخدمين</h4><select id="xu"></select><input id="xm" placeholder="رسالة خاصة"><input id="xd" type="number" placeholder="عدد أيام الإيقاف المؤقت">
+<div class="row"><button class="btn" onclick="adm1('msg')">✉️ إرسال خاص</button><button class="btn" onclick="adm1('sus')">⏸ إيقاف مؤقت</button></div>
+<div class="row" style="margin-top:8px"><button class="btn" onclick="adm1('ban')">🚫 طرد دائم</button><button class="btn" onclick="adm1('unb')">✅ رفع الإيقاف</button></div><div id="mlst" style="margin-top:12px"></div>
+<h4 style="margin-top:22px">🎯 مهام النقاط</h4><input id="kt" placeholder="عنوان المهمة"><div class="row"><select id="kp"><option>TikTok</option><option>YouTube</option><option>Facebook</option><option>Instagram</option><option>Telegram</option></select><input id="kpt" type="number" placeholder="النقاط"></div><input id="kl" placeholder="رابط المهمة https://"><label class="chk"><input type="checkbox" id="kdl"><span>مهمة يومية متكررة</span></label>
+<button class="btn" onclick="addT()">➕ أضف المهمة</button><button class="btn" style="margin-top:8px;background:var(--card2);color:var(--gold2);box-shadow:none;border:1px solid var(--gold)" onclick="seedT()">⚡ إضافة المهام الافتراضية</button><div id="atl" style="margin-top:12px"></div>
+<h4 style="margin-top:22px">📥 طلبات المهام للمراجعة</h4><div id="rvl"></div></section>
+<section id="v-nt" class="hide"><h4>🔔 الإشعارات</h4><div id="ntl"></div></section>
+<section id="v-pts" class="hide"><div class="hero" style="text-align:center"><h3 class="gold" id="ptt" style="font-size:40px">0</h3><p>نقطة، تجمعها من المهام اليومية</p></div><div class="item"><span>🎁 الدخول اليومي</span><b class="gold">+25</b></div><h4 style="margin-top:14px">المهام</h4><div id="tkl"></div></section>
+<section id="v-gal" class="hide"><h4>🖼️ معرض الأعمال</h4><div class="plan"><h4 class="gold">انشر عملك (للمشتركين)</h4><input id="gc" placeholder="وصف العمل"><input type="file" id="gf" accept="image/*"><button class="btn" onclick="gpub()">نشر</button></div><div id="gl" style="margin-top:12px"></div></section>
+<section id="v-me" class="hide"><div class="hero" style="text-align:center"><div class="av" id="mav" style="width:72px;height:72px;margin:0 auto 10px;font-size:28px">S</div><h3 class="gold" id="mn">—</h3><p id="me_em" style="margin-bottom:8px"></p><span id="mbg" class="bdg">مجاني</span></div>
+<div class="stats"><div><strong class="gold" id="mn1">0</strong><small>أعمالي</small></div><div><strong class="gold" id="md">0</strong><small>أيام متبقية</small></div></div>
+<div class="item"><span>الحالة</span><span id="mst"></span></div><div class="item"><span>🎯 النقاط</span><b class="gold" id="mpts">0</b></div>
+<div class="plan vip hide" id="vp"><h4 class="gold">💎 مزايا VIP</h4><label>صورة البروفايل</label><input type="file" id="pf" accept="image/*" onchange="setAv(this)"><label>لون الاسم</label><div class="row" id="cols"></div></div>
+<div class="plan" id="vpt"><h4 class="gold">💎 مزايا VIP</h4><ul><li>صورة بروفايل شخصية</li><li>لون اسم مخصص</li><li>رسالة ترحيب فخمة</li><li>تحميل تطبيقاتنا مجاناً</li></ul></div>
+<button class="btn" style="margin-top:12px" onclick="go('sub')">💎 الاشتراك / تفعيل كود</button><h4 style="margin-top:16px">آخر أعمالي</h4><div id="ml"></div></section>
+<section id="v-vid" class="hide"><h4>🎬 صناعة الفيديو بالذكاء الاصطناعي</h4><input id="vg" placeholder="اكتب فكرة الفيديو الذي تريده">
+<button class="btn" onclick="ai('vid')">📝 جهّز السكربت ووصف الفيديو</button><div class="out hide" id="o-vid"></div>
+<div id="lk-vid" class="hide"><p style="color:var(--mut);font-size:13px;margin-top:12px">يُنسخ الوصف تلقائياً عند الضغط، ثم الصقه في الموقع:</p>
+<div class="row"><a class="btn pay" target="_blank" rel="noopener" href="https://klingai.com">🎥 Kling</a><a class="btn pay" target="_blank" rel="noopener" href="https://lumalabs.ai/dream-machine">🎥 Luma</a></div>
+<div class="row"><a class="btn pay" target="_blank" rel="noopener" href="https://pika.art">🎥 Pika</a><a class="btn pay" target="_blank" rel="noopener" href="https://hailuoai.video">🎥 Hailuo</a></div>
+<p style="color:var(--mut);font-size:12px;margin-top:8px">هذه المواقع تمنح رصيداً مجانياً قد يتغير حسب كل موقع.</p></div>
+<h4 style="margin-top:22px">🖼️ أو اصنع فيديو من صورك</h4><p style="color:var(--mut);font-size:13px;margin-bottom:10px">اختر صورك وأضف عنواناً، ثم أنشئ فيديو بحركة وتلاشٍ وحمّله.</p>
+<input type="file" id="vf" accept="image/*" multiple><input id="vt" placeholder="العنوان على الفيديو">
+<div class="row"><select id="vs"><option value="2">2 ثانية للصورة</option><option value="3" selected>3 ثوانٍ</option><option value="4">4 ثوانٍ</option></select><select id="vr"><option value="9:16">عمودي 9:16</option><option value="16:9">أفقي 16:9</option><option value="1:1">مربع</option></select></div>
+<button class="btn" onclick="mkv()">🎬 أنشئ الفيديو</button><p id="vm" style="margin:8px 0;color:var(--mut)"></p><canvas id="vc" class="hide"></canvas><video id="vpv" class="hide" controls playsinline></video><a id="vdl" class="btn pay hide">⬇️ تحميل الفيديو</a>
+</section>
+<section id="v-apps" class="hide"><h4>🧩 تطبيقاتنا</h4><p style="color:var(--mut);font-size:13px;margin-bottom:10px">تحميل مجاني حصري لأعضاء VIP.</p><div id="apl"></div>
+<div id="apf" class="plan hide"><h4 class="gold">➕ إضافة تطبيق (المدير)</h4><input id="an" placeholder="اسم التطبيق"><input id="au" placeholder="رابط التحميل https://"><input id="ad" placeholder="وصف قصير"><button class="btn" onclick="addApp()">إضافة</button></div></section>
+<section id="v-hook" class="hide"><h4>🔥 مولّد الهوكات</h4><p style="color:var(--mut);font-size:13px;margin-bottom:10px">أول 3 ثوانٍ تحدد نجاح الفيديو: احصل على 5 افتتاحيات نارية.</p>
+<input id="hg" placeholder="موضوع الفيديو"><select id="hp"><option>TikTok</option><option>Instagram Reels</option><option>YouTube Shorts</option></select>
+<button class="btn" onclick="ai('hook')">🔥 ولّد 5 هوكات</button><div id="hk" style="margin-top:12px"></div><div class="out hide" id="o-hook"></div></section>
+<section id="v-chal" class="hide"><h4>📅 تحدي 30 يوماً لنمو حسابك</h4><p style="color:var(--mut);font-size:13px">مهمة لكل يوم. اضغط على المهمة عند إنجازها.</p>
+<div class="bar"><i id="cbar"></i></div><p id="cpt" style="margin-bottom:10px"></p><div id="chl"></div>
+<button class="btn" style="margin-top:6px;background:var(--card2);color:var(--gold2);box-shadow:none;border:1px solid var(--gold)" onclick="CD=[];svC();rc()">↺ إعادة التحدي</button></section>
+</main>
+<div id="pb"><button onclick="go('home')">🏠</button><button onclick="go('hook')">🔥</button><button onclick="go('create')">✨</button><button onclick="cp(LAST)">📋</button><button onclick="go('lib')">⭐</button></div>
+</div>
+
+<div id="tm" class="hide"><div class="tb"><h3 class="gold">📜 الشروط والأحكام وسياسة الخصوصية</h3><div class="tt"><h5>1. القبول</h5><p>باستخدامك تطبيق Gold Studio («التطبيق») أو إنشاء حساب فيه، فإنك تقرّ بأنك قرأت هذه الشروط وفهمتها ووافقت عليها. إن لم توافق فيجب عليك التوقف عن استخدام التطبيق. يجب ألا يقل عمرك عن 13 عاماً، ومن هم دون سن الرشد القانوني في بلدهم يحتاجون موافقة ولي الأمر.</p><h5>2. وصف الخدمة</h5><p>يوفّر التطبيق أدوات لصناعة المحتوى بالذكاء الاصطناعي، منها كتابة النصوص والسكربتات والأغاني وأوصاف الصور والفيديو، ومحرر للصور، ومنشئ فيديو من الصور. قد يحيل التطبيق المستخدم إلى مواقع خارجية تابعة لأطراف أخرى لإتمام التوليد.</p><h5>3. الحساب</h5><p>أنت مسؤول عن صحة بياناتك وعن سرية حسابك وعن كل نشاط يتم عبره. يُمنع إنشاء حسابات وهمية أو مشاركة الحساب أو بيع الاشتراك لطرف آخر. نحتفظ بحق رفض أي تسجيل.</p><h5>4. الخطط والاشتراكات والدفع</h5><p>يتوفر حساب مجاني بميزات محدودة، واشتراك Premium (3 دولارات شهرياً أو 26 سنوياً) واشتراك VIP (5 دولارات شهرياً أو 36 سنوياً)، ويتم الدفع عبر PayPal. بعد استلام الدفع تُرسل الإدارة كود تفعيل يُدخله المشترك في صفحة الاشتراك، ولا يُفعَّل الاشتراك تلقائياً. مدة الكود ثابتة وتبدأ من لحظة التفعيل، والكود للاستخدام مرة واحدة ولشخص واحد. للإدارة تعديل الأسعار والميزات مع إعلام المستخدمين، ولا يسري التعديل على اشتراك سارٍ حتى انتهائه.</p><h5>5. الاسترداد</h5><p>الاشتراكات غير قابلة للاسترداد بعد تسليم كود التفعيل، إلا بقرار تقديري من الإدارة في حالات الخطأ الواضح في الدفع أو تعذّر تقديم الخدمة. لطلب ذلك تواصل معنا خلال 7 أيام من الدفع.</p><h5>6. الاستخدام المقبول</h5><p>يُمنع استخدام التطبيق في: أي نشاط مخالف للقانون، المحتوى الذي يحرّض على الكراهية أو العنف أو يستغل القاصرين أو يتضمن محتوى جنسياً فاضحاً، انتحال شخصيات حقيقية للتضليل أو الاحتيال، انتهاك حقوق الملكية الفكرية للغير، محاولة اختراق التطبيق أو تعطيله أو الالتفاف على أنظمة الاشتراك، أو الإساءة إلى المستخدمين الآخرين.</p><h5>7. محتوى الذكاء الاصطناعي</h5><p>المحتوى المولَّد بالذكاء الاصطناعي قد يحتوي أخطاءً أو معلومات غير دقيقة أو مشابهة لأعمال أخرى. أنت مسؤول عن مراجعته وعن طريقة استخدامه ونشره، ولا نضمن خلوّه من أي مخالفة ولا ملاءمته لغرض معيّن.</p><h5>8. الملكية الفكرية</h5><p>تبقى لك حقوق ما تنشئه من محتوى وفق ما تسمح به القوانين وشروط مواقع الذكاء الاصطناعي المستخدمة. أما التطبيق وتصميمه وشعاره وعلامة SiiBerra® فهي ملك لصاحب التطبيق ولا يجوز نسخها أو استغلالها دون إذن. ويمنحنا نشرك لأي عمل في معرض الأعمال إذناً بعرضه داخل التطبيق.</p><h5>9. المواقع والخدمات الخارجية</h5><p>قد تحيلك أزرار التطبيق إلى مواقع مثل Suno وKling وLuma وPika وHailuo وغيرها. هذه المواقع مستقلة، ولها شروطها وسياساتها وحدود رصيدها المجاني، ولا نتحكم بها ولا نضمن استمرار عملها أو جودتها، ولا نتحمل مسؤولية استخدامك لها.</p><h5>10. النقاط والمهام</h5><p>قد تتيح الإدارة مهام ومكافآت بنقاط (كالدخول اليومي أو متابعة قنوات أو التفاعل على منصات التواصل). النقاط لا قيمة نقدية لها ولا تُحوَّل إلى مال، وللإدارة تعديل المهام وقيمها وإيقافها. يُمنع الغش أو التحايل في إنجاز المهام، وتُلغى النقاط عند ثبوته.</p><h5>11. الإيقاف والإنهاء</h5><p>يحق للإدارة إيقاف أي حساب مؤقتاً أو حذفه نهائياً عند مخالفة هذه الشروط أو الإساءة أو الاحتيال، مع أو بدون إشعار مسبق حسب خطورة المخالفة، ودون استرداد المبالغ المدفوعة في حال المخالفة الجسيمة. ويمكنك طلب حذف حسابك في أي وقت.</p><h5>12. الخصوصية</h5><p>نجمع الحد الأدنى من البيانات اللازمة لتشغيل الخدمة: الاسم والبريد الإلكتروني وحالة الاشتراك ونشاطك داخل التطبيق. لا نبيع بياناتك لأي طرف. قد تُرسل نصوص طلباتك إلى خدمات الذكاء الاصطناعي لمعالجتها، فلا تُدخل معلومات حساسة كأرقام البطاقات أو كلمات المرور. نتخذ إجراءات معقولة لحماية البيانات، ولا يوجد نظام آمن بنسبة 100%. وعند الدخول عبر Google أو TikTok أو Facebook تسري أيضاً سياسات تلك المنصات.</p><h5>13. الإشعارات</h5><p>بموافقتك قد نرسل لك إشعارات عامة أو خاصة داخل التطبيق تتعلق بالخدمة والاشتراك والعروض.</p><h5>14. إخلاء المسؤولية</h5><p>يُقدَّم التطبيق «كما هو» ودون ضمانات صريحة أو ضمنية. وإلى أقصى حد يسمح به القانون، لا يتحمل صاحب التطبيق أي مسؤولية عن أضرار غير مباشرة أو خسائر ناتجة عن الاستخدام أو انقطاع الخدمة أو فقدان البيانات، وتقتصر مسؤوليته في أي حال على المبلغ الذي دفعته خلال آخر 12 شهراً.</p><h5>15. التعديلات</h5><p>قد نحدّث هذه الشروط من وقت لآخر، ويُعدّ استمرارك في استخدام التطبيق بعد التحديث موافقة عليه. وقد نطلب منك الموافقة من جديد عند التغييرات الجوهرية.</p><h5>16. القانون المطبّق والتواصل</h5><p>تخضع هذه الشروط لقوانين بلد مالك التطبيق، وتُحل النزاعات ودياً أولاً. للاستفسار أو الشكاوى أو طلبات حذف البيانات: berramouhcine13@gmail.com. آخر تحديث: 10 أكتوبر 2026 — الإصدار 1.0.</p></div><div class="row"><button class="btn" onclick="terms(0,1)">✅ أوافق</button><button class="btn" style="background:var(--card2);color:var(--gold2);box-shadow:none;border:1px solid var(--gold)" onclick="terms(0)">إغلاق</button></div></div></div>
+<div id="wl" class="hide"><div class="wb"><div class="crown">👑</div><h2 class="gold">أهلاً بك يا <span id="wn"></span></h2>
+<p id="wv">يسعدنا انضمامك إلى نخبة VIP في Gold Studio. كل مزاياك الحصرية مفتوحة لك.</p><p id="wa" class="hide">مرحباً بالمدير العام، الاستوديو كله بين يديك.</p>
+<div class="spk">✨ 💎 ✨</div><button class="btn" onclick="$('wl').classList.add('hide')">ادخل إلى الاستوديو</button></div></div>
+<div id="bn" class="hide" style="position:fixed;inset:0;z-index:70;background:#000;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px"><div><div style="font-size:64px">⛔</div><h3 class="gold" id="bnt"></h3><p style="color:var(--mut);margin:10px 0 16px">للاستفسار تواصل مع الإدارة.</p><button class="btn" onclick="$('bn').classList.add('hide');out_()">خروج</button></div></div>
+<div id="ov" onclick="menu(0)"></div>
+<nav id="dr">
+<div class="uc"><img class="lg" alt="Gold Studio" src="icon.png"><div><b id="dn">ضيف</b><br><span id="dbg" class="bdg">مجاني</span></div></div>
+<select class="ls" onchange="setLang(this.value)" style="margin:8px 0 0"></select>
+<p class="sec">الرئيسية</p>
+<a data-v="home" onclick="go('home')"><i>🏠</i>الرئيسية</a><a data-v="me" onclick="go('me')"><i>👤</i>حسابي</a>
+<p class="sec">الإبداع</p>
+<a data-v="create" onclick="go('create')"><i>✨</i>استوديو الإنشاء</a><a data-v="hook" onclick="go('hook')"><i>🔥</i>مولّد الهوكات</a><a data-v="chal" onclick="go('chal')"><i>📅</i>تحدي 30 يوماً</a><a data-v="pts" onclick="go('pts')"><i>🎯</i>النقاط والمهام</a><a data-v="gal" onclick="go('gal')"><i>🖼️</i>معرض الأعمال</a><a data-v="nt" onclick="go('nt')"><i>🔔</i>الإشعارات</a><a data-v="ideas" onclick="go('ideas')"><i>💡</i>بنك الأفكار</a><a data-v="lib" onclick="go('lib')"><i>📚</i>مكتبتي</a>
+<p class="sec">الاستوديوهات المتقدمة</p>
+<a data-v="song" onclick="go('song')"><i>🎵</i>الأغاني<em class="pl">PRO</em></a><a data-v="img" onclick="go('img')"><i>🖼️</i>الصور<em class="pl">PRO</em></a><a data-v="vid" onclick="go('vid')"><i>🎬</i>صناعة الفيديو<em class="pl">PRO</em></a><a data-v="ed" onclick="go('ed')"><i>🎞️</i>محرر الوسائط<em class="pl">PRO</em></a><a data-v="apps" onclick="go('apps')"><i>🧩</i>تطبيقاتنا<em class="pl pv">VIP</em></a>
+<p class="sec">الاشتراك</p>
+<a data-v="sub" onclick="go('sub')"><i>💎</i>الاشتراك وتفعيل الكود</a>
+<a class="ao hide" data-v="adm" onclick="go('adm')"><i>👑</i>لوحة المدير</a>
+<p class="sec">النظام</p>
+<a data-v="set" onclick="go('set')"><i>⚙️</i>الإعدادات</a>
+<a onclick="terms(1)"><i>📜</i>الشروط والأحكام</a><a onclick="out_()"><i>🚪</i>تسجيل الخروج</a>
+</nav>
+
+<div class="sig gold">SiiBerra®</div>
+<script>
+var SUB=false,UID='',NL=[],CL={l:[],q:[]},OK={},TK=[],PT=0,LAST='',VT=[],CD=[],WS=0,AV='',COL='',TIER='',UNTIL=0,EM='—',T={nt:'الإشعارات',pts:'النقاط والمهام',gal:'معرض الأعمال',hook:'مولّد الهوكات',chal:'تحدي 30 يوماً',apps:'تطبيقاتنا',me:'حسابي',vid:'صناعة الفيديو',adm:'لوحة المدير',song:'استوديو الأغاني',img:'استوديو الصور',ed:'محرر الوسائط',sub:'الاشتراك',home:'الرئيسية',create:'استوديو الإنشاء',ideas:'بنك الأفكار',lib:'مكتبتي',set:'الإعدادات'},mode='l',lib=[],$=function(i){return document.getElementById(i)};
+function tab(m){mode=m;$('tl').className=m=='l'?'on':'';$('ts').className=m=='s'?'on':'';$('fs').className=m=='s'?'':'hide';$('go').textContent=m=='s'?'إنشاء حساب':'دخول'}
+function enter0(p){var n=($('nm').value||$('em').value.split('@')[0]||p||'ضيف').trim();setName(n);$('auth').classList.add('hide');$('app').classList.remove('hide');go('home')}
+function setName(n){$('who').textContent=n;$('av').textContent=(n[0]||'S').toUpperCase()}
+function out_(){menu(0);$('app').classList.add('hide');$('auth').classList.remove('hide')}
+function menu(o){document.body.classList.toggle('open',!!o)}
+function go(v,t){if(v=='apps'&&!vipu())v='sub';if(v=='adm'&&!ADM)v='home';if(!ADM&&!SUB&&/^(song|img|ed|vid)$/.test(v))v='sub';menu(0);['home','create','ideas','lib','set','song','img','ed','sub','adm','me','vid','apps','hook','chal','nt','pts','gal'].forEach(function(x){$('v-'+x).classList.toggle('hide',x!=v)});$('ttl').textContent=T[v];
+document.querySelectorAll('#dr a[data-v]').forEach(function(a){a.classList.toggle('on',a.dataset.v==v)});
+if(t)$('ty').value=t;if(v=='ideas')ideas();if(v=='adm'){ls();adl()}if(v=='nt'){nts(1).then(rn)}if(v=='pts'){pt();lt()}if(v=='gal')lg();if(v=='me')apply();if(v=='apps')loadApps();if(v=='lib')rv();if(v=='chal')rc();reLang();window.scrollTo(0,0)}
+function genOld(){var t=$('tp').value.trim()||'موضوعك',ty=$('ty').value,tn=$('tn').value,s;
+if(ty=='سكربت فيديو')s='🎬 سكربت ('+tn+')\n\n⏱ 0–3ث | الخطاف:\n«ما لا يخبرك به أحد عن '+t+'…»\n\n⏱ 3–20ث | المحتوى:\nثلاث نقاط قوية عن '+t+' بأسلوب '+tn+'.\n\n⏱ 20–30ث | الخاتمة:\nتابعنا للمزيد، واكتب رأيك في التعليقات.';
+else if(ty=='منشور')s='✍️ منشور ('+tn+')\n\nهل فكرت يوماً في '+t+'؟\nإليك ما يغيّر نظرتك بالكامل 👇\n\n• فكرة أولى\n• فكرة ثانية\n• فكرة ثالثة\n\nشاركنا رأيك ✨ #'+t.replace(/\s+/g,'_');
+else{s='🔥 عناوين عن '+t+'\n\n';['السر وراء','5 حقائق مدهشة عن','كل ما تحتاج معرفته عن','لماذا يتحدث الجميع عن','دليلك الكامل إلى'].forEach(function(h,i){s+=(i+1)+'. '+h+' '+t+'\n'});s+='6. هكذا تبدأ مع '+t+' من الصفر\n7. '+t+': الحقيقة الصادمة\n8. أخطاء شائعة في '+t}
+$('out').textContent=s;$('out').classList.remove('hide');$('cp').classList.remove('hide');$('cp').textContent='نسخ النص';
+lib.unshift({t:ty,p:t});$('n1').textContent=lib.length;
+$('ll').innerHTML=lib.map(function(i){return '<div class="item"><span>'+i.t+'</span><small>'+i.p.replace(/</g,'&lt;')+'</small></div>'}).join('')}
+function save(ty,t){lib.unshift({t:ty,p:t});$('n1').textContent=lib.length;$('ll').innerHTML=lib.map(function(i){return '<div class="item"><span>'+i.t+'</span><small>'+i.p.replace(/</g,'&lt;')+'</small></div>'}).join('')}
+async function gen(){var t=$('tp').value.trim();if(!t){$('tp').focus();return}var ty=$('ty').value,tn=$('tn').value,o=$('out');o.classList.remove('hide');o.textContent='جارٍ الكتابة…';
+try{var s=await claude.use('sample');if(!s){genOld();return}
+var r=await s('اكتب بالعربية محتوى من نوع «'+ty+'» عن الموضوع: '+t+'. الأسلوب: '+tn+'. اجعله جاهزاً للنشر ومبدعاً، بدون مقدمات ولا شرح.',{cache:false,onText:function(x){o.textContent=x.text}});
+o.textContent=r.text;LAST=r.text;$('cp').classList.remove('hide');$('cp').textContent='نسخ النص';save(ty,t)}catch(e){o.textContent='تعذّر التوليد: '+((e&&e.message)||'حاول مجدداً')}}
+function ideas(){var a=['قصة قصيرة في 30 ثانية','سلسلة «خلف الكواليس»','سؤال وجواب مع المتابعين','مقارنة قبل وبعد','5 أخطاء يقع فيها المبتدئون','تحدي 7 أيام','اقتباس مع مشهد سينمائي','حقيقة غريبة يومية'].sort(function(){return Math.random()-.5}).slice(0,5);
+$('idl').innerHTML=a.map(function(x){return '<div class="item"><span>💡 '+x+'</span></div>'}).join('')}
+
+var ICON="icon.png",BG="gold-bg.jpg",AE="berramouhcine13@gmail.com",ADM=false,IMG=null,ROT=0,FILE=null;
+async function enter(p){if(!$('ag').checked){$('agm').classList.remove('hide');return}try{localStorage.setItem('siit','1')}catch(e){}enter0(p);EM=$('em').value.trim()||('دخول عبر '+(p||'—'));ADM=false;try{var u=await claude.use('user');ADM=!!(u&&u.isOwner()&&$('em').value.trim().toLowerCase()===AE)}catch(e){}apply();chkSub()}
+function apply(){applyX();$('adm').classList.toggle('hide',!ADM);document.querySelectorAll('.ao').forEach(function(e){e.classList.toggle('hide',!ADM)});$('subst').textContent=ADM?'👑 أنت المدير: جميع الميزات مفتوحة لك مجاناً.':SUB?'✅ اشتراكك فعّال.':'الميزات المتقدمة للمشتركين فقط.'}
+async function ai(k){var o=$('o-'+k),p,t;
+if(k=='song'){t=$('sg').value.trim();if(!t)return;p='اكتب أغنية كاملة (مقاطع وكورس) بلغة '+$('sgl').value+' عن: '+t+'. النمط: '+$('sgg').value+'. ثم أضف سطراً بعنوان STYLE يحتوي وصفاً موسيقياً بالإنجليزية جاهزاً للصقه في مولّد موسيقى.'}
+else if(k=='hook'){t=$('hg').value.trim();if(!t)return;p='اكتب 5 هوكات (جملة افتتاحية لا تتجاوز 3 ثوانٍ نطقاً) بالعربية لفيديو على '+$('hp').value+' عن: '+t+'. كل هوك بنمط مختلف (سؤال صادم، رقم، سر، تحدٍّ، قصة). أخرج 5 أسطر فقط، سطر لكل هوك، بدون ترقيم أو شرح.'}
+else if(k=='vid'){t=$('vg').value.trim();if(!t)return;p='اكتب بالعربية سكربت فيديو قصير مقسّماً إلى مشاهد (رقم المشهد، النص المنطوق، وصف المشهد، ووصف إنجليزي للصورة) عن: '+t+'. وأضف في النهاية سطراً يبدأ بـ VIDEO PROMPT: يحتوي وصفاً إنجليزياً موجزاً (حتى 60 كلمة) لمشهد فيديو واحد لمولّد فيديو بالذكاء الاصطناعي.'}
+else{t=$('ig').value.trim();if(!t)return;p='حوّل هذه الفكرة إلى وصف احترافي مفصل بالإنجليزية لمولّد صور (إضاءة، عدسة، تكوين، جودة 8K) وأضف سطر Negative prompt. الفكرة: '+t+'. النمط: '+$('igs').value}
+o.classList.remove('hide');o.textContent='جارٍ الكتابة…';
+try{var s=await claude.use('sample');var r=await s(p,{cache:false,onText:function(x){o.textContent=x.text}});o.textContent=r.text;LAST=r.text;after(k,r.text)}catch(e){o.textContent='تعذّر التوليد: '+((e&&e.message)||'')}}
+function load(i){var f=i.files[0];if(!f)return;FILE=f;var v=$('vd'),c=$('cv');$('ctl').classList.remove('hide');
+if(f.type.indexOf('video')==0){c.classList.add('hide');v.classList.remove('hide');v.src=URL.createObjectURL(f);IMG=null;return}
+v.classList.add('hide');c.classList.remove('hide');var rd=new FileReader();rd.onload=function(){var m=new Image();m.onload=function(){IMG=m;ROT=0;draw()};m.src=rd.result};rd.readAsDataURL(f)}
+function rot(){ROT=(ROT+90)%360;draw()}
+function draw(){if(!IMG)return;var c=$('cv'),x=c.getContext('2d'),sw=IMG.width,sh=IMG.height,l=+$('cl').value/100*sw,r=+$('cr').value/100*sw,t=+$('ct').value/100*sh,b=+$('cb').value/100*sh,w=sw-l-r,h=sh-t-b,q=ROT%180;
+c.width=q?h:w;c.height=q?w:h;x.filter='brightness('+$('b').value+'%) contrast('+$('c').value+'%) saturate('+$('s').value+'%)';
+x.save();x.translate(c.width/2,c.height/2);x.rotate(ROT*Math.PI/180);x.drawImage(IMG,l,t,w,h,-w/2,-h/2,w,h);x.restore();
+var TX=$('tx').value;if(TX){x.filter='none';x.font='800 '+Math.round(c.width/12)+'px Cairo,sans-serif';x.fillStyle='#f3d98b';x.textAlign='center';x.fillText(TX,c.width/2,c.height-c.height/12)}}
+async function dl(){try{var d=await claude.use('downloads');if(!d)return;
+if(!IMG){await d.save({filename:FILE.name,data:FILE});return}
+$('cv').toBlob(function(bl){d.save({filename:'sii-edit.png',data:bl}).catch(function(){})})}catch(e){}}
+document.querySelectorAll('.lg').forEach(function(i){i.src=ICON});document.body.style.setProperty('--bgi','url('+BG+')');
+
+function after(k,t){if(k=='img'){var q=t.split(/negative/i)[0].replace(/[#*`\n]+/g,' ').trim().slice(0,700),a=$('lk-img');a.href='https://image.pollinations.ai/prompt/'+encodeURIComponent(q)+'?width=1024&height=1024&nologo=true';a.classList.remove('hide')}
+else if(k=='hook'){hooks(t)}
+else if(k=='vid'){var l=$('lk-vid'),q=(t.split(/VIDEO PROMPT:?/i)[1]||t).trim();l.classList.remove('hide');l.querySelectorAll('a').forEach(function(a){a.onclick=function(){try{navigator.clipboard.writeText(q)}catch(e){}}})}
+else if(k=='song'){var b=$('lk-song');b.classList.remove('hide');b.onclick=function(){try{navigator.clipboard.writeText(t)}catch(e){}}}}
+async function getdb(){try{return await claude.use('db')}catch(e){return null}}
+async function me(){try{var u=await claude.use('user');return u&&await u.id()}catch(e){return null}}
+async function chkSub(){SUB=false;try{var d=await getdb(),id=await me();if(d&&id){UID=id;var s=await d.collection('data/users/'+id).doc('sub').get();UNTIL=s.exists?s.data().until:0;TIER=s.exists?(s.data().tier||'pro'):'';var pr=await d.collection('data/users/'+id).doc('prefs').get();if(pr.exists){AV=pr.data().a||AV;COL=pr.data().c||COL}var vv=await d.collection('data/users/'+id).doc('vault').get();if(vv.exists&&vv.data().i)VT=vv.data().i;var cc=await d.collection('data/users/'+id).doc('chal').get();if(cc.exists&&cc.data().d)CD=cc.data().dSUB=UNTIL>Date.now()}}catch(e){}apply();if(vipu()&&!WS){WS=1;welcome()}boot()}
+async function redeem(){var m=$('rm'),code=$('rc').value.trim().toUpperCase();if(!code)return;m.textContent='…';
+try{var d=await getdb(),id=await me();if(!d||!id){m.textContent='سجّل الدخول بحساب Claude المدعو لتفعيل الكود.';return}
+var c=await d.collection('codes').doc(code).get();if(!c.exists){m.textContent='❌ كود غير صحيح';return}
+var u=await d.collection('used').doc(code).get();if(u.exists){m.textContent='❌ هذا الكود مستخدم';return}
+await d.collection('used').doc(code).set({by:id,n:$('who').textContent,c:code,at:Date.now()});
+await d.collection('data/users/'+id).doc('sub').set({until:Date.now()+c.data().days*864e5,tier:c.data().tier||'pro'});
+m.textContent='✅ تم التفعيل';chkSub()}catch(e){m.textContent='تعذّر التفعيل: '+((e&&e.message)||'')}}
+async function mk(dy,tr){dy=dy||30;tr=tr||'pro';var d=await getdb();if(!d){$('nc').textContent='قاعدة البيانات غير متاحة';return}
+var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='SII-',r=new Uint8Array(8);crypto.getRandomValues(r);for(var i=0;i<8;i++){s+=a[r[i]%32];if(i==3)s+='-'}
+await d.collection('codes').doc(s).set({days:dy,tier:tr,at:Date.now()});$('nc').textContent=s;ls()}
+async function ls(){var d=await getdb();if(!d)return;var c=await d.collection('codes').orderBy('at','desc').limit(20).get(),u=await d.collection('used').get(),us={};u.docs.forEach(function(x){us[x.id]=1});
+$('cl2').innerHTML=c.docs.map(function(x){return '<div class="item"><span>'+x.id+'</span><small>'+(x.data().tier=='vip'?'VIP · ':'')+x.data().days+' يوم · '+(us[x.id]?'مستخدم':'متاح')+'</small></div>'}).join('')}
+
+function applyX(){var n=$('who').textContent,b=ADM?'👑 المدير':SUB?(TIER=='vip'?'💎 VIP':'⭐ مشترك'):'مجاني';$('dn').textContent=n;$('dbg').textContent=b;$('mbg').textContent=b;$('mn').textContent=n;$('mav').textContent=$('av').textContent;$('me_em').textContent=EM;$('mn1').textContent=lib.length;$('md').textContent=ADM?'∞':SUB?Math.max(0,Math.ceil((UNTIL-Date.now())/864e5)):'0';$('mst').textContent=ADM?'مدير — كل شيء مجاني':SUB?(TIER=='vip'?'VIP فعّال':'مشترك فعّال'):'مجاني (بدون اشتراك)';$('ml').innerHTML=$('ll').innerHTML;document.querySelectorAll('.pl:not(.pv)').forEach(function(e){e.classList.toggle('hide',ADM||SUB)});var V=vipu();document.querySelectorAll('.pv').forEach(function(e){e.classList.toggle('hide',V)});$('vp').classList.toggle('hide',!V);$('vpt').classList.toggle('hide',V);$('apf').classList.toggle('hide',!ADM);showP();reLang()}
+async function mkv(){var fs=[].slice.call($('vf').files),m=$('vm');if(!fs.length){m.textContent='اختر صورة واحدة على الأقل';return}
+if(!window.MediaRecorder){m.textContent='هذا المتصفح لا يدعم إنشاء الفيديو';return}
+var d=+$('vs').value,rt=$('vr').value.split(':'),W=+rt[0]>+rt[1]?1280:720,H=+rt[0]>+rt[1]?720:+rt[0]==+rt[1]?720:1280,c=$('vc'),x=c.getContext('2d');c.width=W;c.height=H;c.classList.remove('hide');
+var ims=await Promise.all(fs.map(function(f){return new Promise(function(ok){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){ok(i)};i.src=r.result};r.readAsDataURL(f)})}));
+var mt=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm'].filter(function(t){return MediaRecorder.isTypeSupported(t)})[0]||'',ex=mt.indexOf('mp4')>=0?'mp4':'webm',rec=new MediaRecorder(c.captureStream(30),mt?{mimeType:mt,videoBitsPerSecond:4e6}:undefined),ch=[],tt=$('vt').value,t0=performance.now(),tot=d*ims.length*1000;
+rec.ondataavailable=function(e){if(e.data.size)ch.push(e.data)};
+rec.onstop=function(){var bl=new Blob(ch,{type:ex=='mp4'?'video/mp4':'video/webm'});if(!bl.size){m.textContent='❌ لم يُنتج فيديو، جرّب صوراً أقل أو أصغر';return}c.classList.add('hide');var u=URL.createObjectURL(bl),pv=$('vpv'),a=$('vdl');pv.src=u;pv.classList.remove('hide');a.href=u;a.download='sii-video.'+ex;a.classList.remove('hide');m.textContent='✅ الفيديو جاهز: شاهده ثم اضغط تحميل'};
+rec.start();m.textContent='جارٍ إنشاء الفيديو… لا تغادر الصفحة';
+(function f(){var e=performance.now()-t0;if(e>=tot){rec.stop();return}
+var i=Math.min(ims.length-1,Math.floor(e/(d*1000))),p=(e%(d*1000))/(d*1000),im=ims[i],s=Math.max(W/im.width,H/im.height)*(1+.08*p),w=im.width*s,h=im.height*s;
+x.globalAlpha=1;x.fillStyle='#000';x.fillRect(0,0,W,H);x.globalAlpha=Math.min(1,p*6);x.drawImage(im,(W-w)/2,(H-h)/2,w,h);x.globalAlpha=1;
+if(tt){x.fillStyle='#000a';x.fillRect(0,H*.78,W,H*.12);x.fillStyle='#f3d98b';x.font='800 '+Math.round(W/16)+'px Cairo,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(tt,W/2,H*.84)}
+x.fillStyle='#d4af37';x.font='600 '+Math.round(W/40)+'px Cairo,sans-serif';x.textAlign='right';x.textBaseline='alphabetic';x.fillText('SiiBerra®',W-16,H-16);
+requestAnimationFrame(f)})()}
+function terms(o,a){$('tm').classList.toggle('hide',!o);if(a){$('ag').checked=true;$('agm').classList.add('hide')}}
+try{if(localStorage.getItem('siit')=='1')$('ag').checked=true}catch(e){}
+
+var LANGS={ar:['العربية','rtl','Arabic'],en:['English','ltr','English'],fr:['Français','ltr','French'],es:['Español','ltr','Spanish'],de:['Deutsch','ltr','German'],it:['Italiano','ltr','Italian'],pt:['Português','ltr','Portuguese'],tr:['Türkçe','ltr','Turkish'],ru:['Русский','ltr','Russian'],zh:['中文','ltr','Chinese'],ja:['日本語','ltr','Japanese'],ko:['한국어','ltr','Korean'],hi:['हिन्दी','ltr','Hindi'],id:['Bahasa Indonesia','ltr','Indonesian'],ur:['اردو','rtl','Urdu'],fa:['فارسی','rtl','Persian']},LC='ar',TRM={},BSY=0,AR=/[\u0600-\u06FF]/;
+function tn(){var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,null),a=[],n;while(n=w.nextNode()){if(n.parentNode.closest('#tm,.ls,script,style,#xu,#mlst,#usl,#rvl,#gl,#ntl'))continue;var s=n.__o!=null?n.__o:n.nodeValue;if(AR.test(s))a.push(n)}return a}
+function put(){tn().forEach(function(n){if(n.__o==null)n.__o=n.nodeValue;var k=n.__o.trim(),t=LC=='ar'?k:TRM[k];if(t)n.nodeValue=n.__o.replace(k,t)});
+document.querySelectorAll('[placeholder]').forEach(function(e){if(e.__p==null)e.__p=e.placeholder;var t=LC=='ar'?e.__p:TRM[e.__p];if(t)e.placeholder=t})}
+async function fill(){var m={};tn().forEach(function(n){var k=(n.__o!=null?n.__o:n.nodeValue).trim();if(!TRM[k])m[k]=1});
+document.querySelectorAll('[placeholder]').forEach(function(e){var k=e.__p!=null?e.__p:e.placeholder;if(AR.test(k)&&!TRM[k])m[k]=1});
+var ks=Object.keys(m);if(!ks.length||BSY)return;BSY=1;
+try{var s=await claude.use('sample');for(var i=0;i<ks.length;i+=80){var ch=ks.slice(i,i+80),r=await s.json('Translate each Arabic UI string in this JSON array into '+LANGS[LC][2]+'. Keep emojis, numbers and brand names (Gold Studio, SiiBerra, PayPal, VIP, Premium, PRO) unchanged. Return ONLY a JSON array of the same length and order: '+JSON.stringify(ch));if(Array.isArray(r))ch.forEach(function(k,j){if(r[j])TRM[k]=r[j]})}
+try{localStorage.setItem('siil_'+LC,JSON.stringify(TRM))}catch(e){}}catch(e){}BSY=0}
+async function setLang(c){LC=c;document.documentElement.lang=c;document.documentElement.dir=LANGS[c][1];document.querySelectorAll('.ls').forEach(function(s){s.value=c});try{localStorage.setItem('siil',c)}catch(e){}
+if(c=='ar'){put();return}try{TRM=JSON.parse(localStorage.getItem('siil_'+c)||'{}')}catch(e){TRM={}}put();await fill();put()}
+function reLang(){if(LC=='ar')return;put();fill().then(put)}
+function vipu(){return ADM||(SUB&&TIER=='vip')}
+function showP(){var v=vipu();['av','mav'].forEach(function(i){var e=$(i);if(v&&AV){e.style.backgroundImage='url('+AV+')';e.style.backgroundSize='cover';e.style.color='transparent'}else{e.style.backgroundImage='';e.style.color=''}});
+['dn','mn','who'].forEach(function(i){var e=$(i),c=v&&COL?COL:'';e.style.webkitTextFillColor=c;e.style.color=c})}
+function setAv(i){var f=i.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var m=new Image();m.onload=function(){var c=document.createElement('canvas');c.width=c.height=160;var x=c.getContext('2d'),s=Math.min(m.width,m.height);x.drawImage(m,(m.width-s)/2,(m.height-s)/2,s,s,0,0,160,160);AV=c.toDataURL('image/jpeg',.8);savP();showP()};m.src=r.result};r.readAsDataURL(f)}
+function setCol(c){COL=c;savP();showP()}
+async function savP(){try{localStorage.setItem('siip',JSON.stringify({a:AV,c:COL}))}catch(e){}try{var d=await getdb(),id=await me();if(d&&id)await d.collection('data/users/'+id).doc('prefs').set({a:AV,c:COL})}catch(e){}}
+function welcome(){$('wn').textContent=$('who').textContent;$('wn').style.webkitTextFillColor=COL||'';chime();$('wa').classList.toggle('hide',!ADM);$('wv').classList.toggle('hide',ADM);$('wl').classList.remove('hide');reLang()}
+async function loadApps(){var d=await getdb(),b=$('apl');b.textContent='';if(!d){b.textContent='سجّل الدخول بحساب Claude المدعو لعرض التطبيقات.';return}
+try{var s=await d.collection('apps').orderBy('at','desc').get();if(s.empty){b.textContent='لا توجد تطبيقات بعد.';reLang();return}
+s.docs.forEach(function(x){var v=x.data(),c=document.createElement('div');c.className='item';var t=document.createElement('div'),n=document.createElement('b'),ds=document.createElement('small');n.textContent=v.n;ds.textContent=v.d||'';t.append(n,document.createElement('br'),ds);
+var a=document.createElement('a');a.className='btn';a.style.cssText='width:auto;padding:8px 14px;text-decoration:none';a.textContent='⬇ تحميل';a.href=v.u;a.target='_blank';a.rel='noopener';c.append(t,a);
+if(ADM){var r=document.createElement('button');r.textContent='🗑';r.onclick=async function(){await d.collection('apps').doc(x.id).delete();loadApps()};c.append(r)}b.append(c)});reLang()}catch(e){b.textContent='تعذّر التحميل'}}
+async function addApp(){var d=await getdb(),u=$('au').value.trim(),n=$('an').value.trim();if(!d||!n||!/^https?:\/\//.test(u))return;await d.collection('apps').add({n:n,u:u,d:$('ad').value.trim(),at:Date.now()});$('an').value=$('au').value=$('ad').value='';loadApps()}
+(function(){var o='';for(var k in LANGS)o+='<option value="'+k+'">'+LANGS[k][0]+'</option>';document.querySelectorAll('.ls').forEach(function(s){s.innerHTML=o;s.value='ar'});
+$('cols').innerHTML=['#f3d98b','#ff6b9d','#6bd5ff','#7dffb3','#c792ff','#ff9f43','#ffffff'].map(function(c){return '<button style="background:'+c+';height:34px;border-radius:10px;border:1px solid var(--line);cursor:pointer" onclick="setCol(\''+c+'\')"></button>'}).join('');
+try{var q=JSON.parse(localStorage.getItem('siip')||'{}');AV=q.a||'';COL=q.c||'';var l=localStorage.getItem('siil');if(l&&LANGS[l])setLang(l)}catch(e){}})();
+
+var CH=['حدّد مجالك وجمهورك واكتب تعريفاً واضحاً لحسابك', 'حسّن الصورة والاسم والسيرة الذاتية', 'حلّل 5 حسابات ناجحة في مجالك', 'انشر أول فيديو بهوك قوي في أول 3 ثوانٍ', 'تفاعل مع 20 فيديو في مجالك بتعليقات حقيقية', 'انشر فيديو يحل مشكلة لجمهورك', 'راجع إحصائياتك: أي فيديو حقق أعلى مشاهدة؟', 'انشر فيديو بصيغة «3 أخطاء يقع فيها الجميع»', 'أضف ترجمة نصية وموسيقى رائجة لفيديو', 'ردّ على كل التعليقات بنص أو بفيديو', 'انشر قصة شخصية قصيرة تقرّبك من جمهورك', 'جرّب هوكاً مختلفاً عن السابق', 'انشر فيديو «قبل وبعد»', 'راجع أداء الأسبوعين وكرّر الأفضل', 'اعمل ثنائياً (Duet) أو تعاوناً مع حساب قريب منك', 'انشر فيديو تعليمياً من 3 خطوات', 'ابدأ سلسلة فيديوهات بعنوان ثابت', 'انشر في وقت الذروة لجمهورك', 'اطرح سؤالاً يدفع المتابعين للتعليق', 'صوّر لقطات من خلف الكواليس', 'حسّن العنوان والغلاف لأفضل 3 فيديوهات', 'أجب في فيديو عن سؤال من متابع', 'جرّب بثاً مباشراً قصيراً', 'انشر فيديو «أسطورة أم حقيقة؟»', 'أضف دعوة واضحة في سيرتك (رابط أو متابعة)', 'كرّر أنجح فيديوهاتك بزاوية جديدة', 'اشكر متابعيك وشارك إنجازك معهم', 'خطّط لمحتوى الشهر القادم', 'انشر فيديو «ما تعلمته في 30 يوماً»', 'قيّم تقدمك وضع هدفاً للشهر التالي'];
+function toast(m){var d=document.createElement('div');d.className='toast';d.textContent=m;document.body.append(d);setTimeout(function(){d.remove()},2200)}
+function cp(t){if(!t){toast('لا يوجد نص بعد');return}try{navigator.clipboard.writeText(t);toast('📋 تم النسخ')}catch(e){}}
+function chime(){try{var a=new (window.AudioContext||window.webkitAudioContext)(),t=a.currentTime;a.resume();[523.25,659.25,783.99,1046.5].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain(),s=t+i*.14;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.12,s+.03);g.gain.exponentialRampToValueAtTime(.001,s+.9);o.connect(g);g.connect(a.destination);o.start(s);o.stop(s+1)})}catch(e){}}
+function stor(k,v,doc,o){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}(async function(){try{var d=await getdb(),id=await me();if(d&&id)await d.collection('data/users/'+id).doc(doc).set(o)}catch(e){}})()}
+function svV(){stor('siiv',VT,'vault',{i:VT})}
+function svC(){stor('siic',CD,'chal',{d:CD})}
+function vsave(t){t=(t||'').trim();if(!t||t.indexOf('جارٍ')==0)return;if(!ADM&&!SUB&&VT.length>=5){toast('الخزنة المجانية 5 عناصر، اشترك للمزيد');return}VT.unshift({t:t.slice(0,1500),at:Date.now()});VT=VT.slice(0,60);svV();toast('⭐ حُفظ في الخزنة')}
+function rv(){var b=$('vl');b.textContent='';if(!VT.length){b.textContent='الخزنة فارغة. احفظ أفكارك بزر ⭐';reLang();return}
+VT.forEach(function(v,i){var c=document.createElement('div');c.className='item';var s=document.createElement('span');s.textContent=v.t.slice(0,140)+(v.t.length>140?'…':'');s.style.flex='1';var a=document.createElement('button');a.textContent='📋';a.onclick=function(){cp(v.t)};var d=document.createElement('button');d.textContent='🗑';d.onclick=function(){VT.splice(i,1);svV();rv()};c.append(s,a,d);b.append(c)})}
+function hooks(t){$('o-hook').classList.add('hide');var b=$('hk');b.textContent='';
+t.split('\n').map(function(s){return s.replace(/^\s*(?:\d+[.)]|[-*•])\s*/,'').trim()}).filter(function(s){return s.length>6}).slice(0,5).forEach(function(s){var c=document.createElement('div');c.className='item';var x=document.createElement('span');x.textContent='🔥 '+s;x.style.flex='1';var a=document.createElement('button');a.textContent='📋';a.onclick=function(){cp(s)};var v=document.createElement('button');v.textContent='⭐';v.onclick=function(){vsave(s)};c.append(x,a,v);b.append(c)});LAST=t}
+function rc(){var b=$('chl');b.textContent='';var nx=-1;for(var i=0;i<30;i++)if(CD.indexOf(i)<0){nx=i;break}
+CH.forEach(function(t,i){var dn=CD.indexOf(i)>=0,c=document.createElement('div'),e=document.createElement('b'),s=document.createElement('span');c.className='item';c.style.cssText='cursor:pointer;gap:8px;justify-content:flex-start;'+(i==nx?'border-color:var(--gold);box-shadow:0 0 16px #d4af3744;':'')+(dn?'opacity:.6':'');e.textContent=dn?'✅':'⬜';s.textContent='اليوم '+(i+1)+': '+t;c.append(e,s);c.onclick=function(){var k=CD.indexOf(i);if(k<0)CD.push(i);else CD.splice(k,1);svC();rc()};b.append(c)});
+$('cbar').style.width=(CD.length/30*100)+'%';$('cpt').textContent=CD.length+' / 30'+(CD.length==30?' 🏆':'');reLang()}
+(function(){try{VT=JSON.parse(localStorage.getItem('siiv')||'[]');CD=JSON.parse(localStorage.getItem('siic')||'[]')}catch(e){}
+document.querySelectorAll('.out').forEach(function(o){if(o.id=='nc')return;var b=document.createElement('button');b.className='btn vlt';b.style.cssText='margin-top:8px;background:var(--card2);color:var(--gold2);box-shadow:none;border:1px solid var(--gold)';b.textContent='⭐ حفظ في الخزنة';b.onclick=function(){LAST=o.textContent;vsave(o.textContent)};o.insertAdjacentElement('afterend',b);var g=document.createElement('button');g.className='btn vlt';g.style.cssText=b.style.cssText;g.textContent='🖼️ نشر في المعرض (للمشتركين)';g.onclick=function(){pubG(o.textContent,'')};b.insertAdjacentElement('afterend',g)})})();
+
+function tdy(){return new Date().toISOString().slice(0,10)}
+function dt(x){return new Date(x).toLocaleDateString()}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+async function boot(){var d=await getdb();if(!d||!UID)return;
+try{if(!ADM){var b=await d.collection('bans').doc(UID).get();if(b.exists){var v=b.data();if(v.p||v.u>Date.now()){$('bnt').textContent=v.p?'تم إيقاف حسابك نهائياً.':'حسابك موقوف حتى '+dt(v.u);$('bn').classList.remove('hide');reLang();return}}}
+await d.collection('members').doc(UID).set({n:$('who').textContent,t:ADM?'adm':SUB?TIER:'free',u:UNTIL,at:Date.now()});
+if(ADM){var u=await d.collection('used').orderBy('at','desc').limit(1).get(),l=+(localStorage.getItem('siiu')||0);if(!u.empty&&u.docs[0].data().at>l)toast('💰 مشترك جديد فعّل كوداً')}}catch(e){}
+nts();dayLogin()}
+async function nts(q){var d=await getdb();if(!d||!UID)return;try{var a=await d.collection('notices').orderBy('at','desc').limit(20).get(),p=await d.collection('inbox').where('to','==',UID).get(),L=[];
+a.docs.forEach(function(x){L.push(Object.assign({k:'🔔'},x.data()))});p.docs.forEach(function(x){L.push(Object.assign({k:'✉️'},x.data()))});L.sort(function(x,y){return y.at-x.at});NL=L;
+var s=+(localStorage.getItem('siis')||0),n=L.filter(function(x){return x.at>s}).length;$('bc').textContent=n;$('bc').classList.toggle('hide',!n);if(n&&!q)toast('🔔 لديك '+n+' إشعار جديد')}catch(e){}}
+function rn(){var b=$('ntl');b.textContent='';if(!NL.length)b.textContent='لا توجد إشعارات.';NL.forEach(function(x){var c=el('div','item'),s=el('span',0,x.k+' '+(x.t?x.t+': ':'')+x.m);c.append(s,el('small',0,dt(x.at)));b.append(c)});try{localStorage.setItem('siis',Date.now())}catch(e){}$('bc').classList.add('hide')}
+function pt(){var s=(CL.l||[]).length*25;for(var k in OK)s+=OK[k]||0;PT=s;$('ptt').textContent=s;$('mpts').textContent=s}
+async function dayLogin(){var d=await getdb();if(!d||!UID)return;try{var c=await d.collection('claims').doc(UID).get(),v=c.exists?c.data():{};v.l=v.l||[];v.q=v.q||[];CL=v;
+if(v.l.indexOf(tdy())<0){v.l.push(tdy());await d.collection('claims').doc(UID).set(v);toast('🎁 +25 نقطة: دخول يومي')}
+var o=await d.collection('ok').doc(UID).get();OK=o.exists?(o.data().k||{}):{};pt()}catch(e){}}
+async function lt(){var d=await getdb(),b=$('tkl');b.textContent='';if(!d){b.textContent='سجّل الدخول بحساب Claude لعرض المهام.';return}
+try{var s=await d.collection('tasks').orderBy('at','desc').get();if(s.empty){b.textContent='لا توجد مهام الآن.';return}
+s.docs.forEach(function(x){var t=x.data(),k=x.id+(t.dl?'_'+tdy():'_once'),dn=OK[k]!=null,pn=(CL.q||[]).some(function(q){return q.k==k}),c=el('div','plan');
+c.append(el('b',0,'📌 '+t.pf+' · '+t.t+'  (+'+t.pts+')'),el('small',0,t.dl?'  🔁 يومية':'  مرة واحدة'));
+if(t.l){var a=el('a','btn pay','🔗 افتح');a.href=t.l;a.target='_blank';a.rel='noopener';c.append(a)}
+if(dn)c.append(el('p',0,'✅ تم اعتمادها'));else if(pn)c.append(el('p',0,'⏳ قيد المراجعة'));
+else{var i=el('input');i.placeholder='إثبات الإنجاز (اسم حسابك أو رابط تعليقك)';var g=el('button','btn','أنجزت المهمة');g.onclick=async function(){if(!i.value.trim())return;CL.q.push({k:k,tid:x.id,tt:t.t,p:t.pts,pr:i.value.trim().slice(0,200),n:$('who').textContent,at:Date.now()});CL.q=CL.q.slice(-100);await d.collection('claims').doc(UID).set(CL);toast('⏳ أُرسلت للمراجعة');lt()};c.append(i,g)}
+b.append(c)});reLang()}catch(e){b.textContent='تعذّر التحميل'}}
+async function pubG(t,img){if(!(ADM||SUB)){toast('النشر للمشتركين فقط');go('sub');return}var d=await getdb();if(!d||!UID){toast('سجّل الدخول بحساب Claude');return}
+try{var r=await d.collection('gallery').doc(UID).get(),w=r.exists?(r.data().w||[]):[];w.unshift({t:(t||'').slice(0,600),i:img||'',n:$('who').textContent,at:Date.now()});await d.collection('gallery').doc(UID).set({w:w.slice(0,3)});toast('🖼️ نُشر في المعرض');if($('v-gal').classList.contains('hide')==false)lg()}catch(e){toast('تعذّر النشر')}}
+function gpub(){var f=$('gf').files[0],t=$('gc').value;if(!f&&!t.trim())return;if(!f){pubG(t,'');return}var r=new FileReader();r.onload=function(){var m=new Image();m.onload=function(){var s=Math.min(1,560/Math.max(m.width,m.height)),c=document.createElement('canvas');c.width=m.width*s;c.height=m.height*s;c.getContext('2d').drawImage(m,0,0,c.width,c.height);pubG(t,c.toDataURL('image/jpeg',.6))};m.src=r.result};r.readAsDataURL(f)}
+async function lg(){var d=await getdb(),b=$('gl');b.textContent='';if(!d){b.textContent='سجّل الدخول بحساب Claude لعرض المعرض.';return}
+try{var s=await d.collection('gallery').get(),A=[];s.docs.forEach(function(x){(x.data().w||[]).forEach(function(w){A.push({u:x.id,w:w})})});A.sort(function(p,q){return q.w.at-p.w.at});if(!A.length){b.textContent='لا توجد أعمال بعد.';return}
+A.forEach(function(a){var c=el('div','plan');if(a.w.i){var im=el('img');im.src=a.w.i;im.style.cssText='width:100%;border-radius:12px;margin-bottom:8px';c.append(im)}c.append(el('p',0,a.w.t),el('small',0,'✨ '+a.w.n));
+if(ADM){var x=el('button',0,' 🗑');x.onclick=async function(){var r=await d.collection('gallery').doc(a.u).get();await d.collection('gallery').doc(a.u).set({w:(r.data().w||[]).filter(function(q){return q.at!=a.w.at})});lg()};c.append(x)}b.append(c)})}catch(e){b.textContent='تعذّر التحميل'}}
+async function adl(){var d=await getdb();if(!d)return;try{
+var m=await d.collection('members').get(),s=$('xu'),ml=$('mlst');s.textContent='';ml.textContent='';m.docs.forEach(function(x){var v=x.data(),o=el('option',0,(v.n||'—')+' · '+(v.t=='vip'?'VIP':v.t=='pro'?'Premium':v.t=='adm'?'Admin':'Free'));o.value=x.id;s.append(o);var c=el('div','item');c.append(el('span',0,o.textContent+(v.u>Date.now()?' · '+Math.ceil((v.u-Date.now())/864e5)+'d':'')));ml.append(c)});
+var u=await d.collection('used').orderBy('at','desc').limit(10).get(),ul=$('usl');ul.textContent='';u.docs.forEach(function(x){var v=x.data(),c=el('div','item');c.append(el('span',0,(v.n||'—')+' · '+(v.c||x.id)),el('small',0,dt(v.at)));ul.append(c)});try{localStorage.setItem('siiu',Date.now())}catch(e){}
+var t=await d.collection('tasks').orderBy('at','desc').get(),tl=$('atl');tl.textContent='';t.docs.forEach(function(x){var v=x.data(),c=el('div','item'),b=el('button',0,'🗑');b.onclick=async function(){await d.collection('tasks').doc(x.id).delete();adl()};c.append(el('span',0,v.pf+' · '+v.t+' (+'+v.pts+')'),b);tl.append(c)});rvw()}catch(e){}}
+async function rvw(){var d=await getdb(),b=$('rvl');b.textContent='';try{var cs=await d.collection('claims').get(),os=await d.collection('ok').get(),om={};os.docs.forEach(function(x){om[x.id]=x.data()});var n=0;
+cs.docs.forEach(function(x){(x.data().q||[]).forEach(function(q){var o=om[x.id]||{};if((o.k&&o.k[q.k]!=null)||(o.r&&o.r[q.k]))return;n++;var c=el('div','item'),s=el('span',0,(q.n||'—')+' · '+q.tt+' · +'+q.p+' · '+q.pr),a=el('button',0,'✅'),r=el('button',0,'❌');
+a.onclick=function(){dec(x.id,q,1)};r.onclick=function(){dec(x.id,q,0)};c.append(s,a,r);b.append(c)})});if(!n)b.textContent='لا توجد طلبات.'}catch(e){}}
+async function dec(u,q,ok){var d=await getdb(),r=await d.collection('ok').doc(u).get(),o=r.exists?r.data():{};o.k=o.k||{};o.r=o.r||{};if(ok)o.k[q.k]=q.p;else o.r[q.k]=1;await d.collection('ok').doc(u).set(o);if(ok)await d.collection('inbox').add({to:u,t:'🎯 مهمة معتمدة',m:'+'+q.p+' نقطة: '+q.tt,at:Date.now()});rvw()}
+async function bcast(){var d=await getdb(),m=$('xb').value.trim();if(!d||!m)return;await d.collection('notices').add({t:'📢 إعلان',m:m,at:Date.now()});$('xb').value='';toast('✅ أُرسل للجميع')}
+async function adm1(a){var d=await getdb(),u=$('xu').value,m=$('xm').value.trim(),n=Date.now();if(!d||!u)return;try{
+if(a=='msg'){if(!m)return;await d.collection('inbox').add({to:u,t:'رسالة من الإدارة',m:m,at:n})}
+else if(a=='sus'){var k=+$('xd').value;if(!k)return;await d.collection('bans').doc(u).set({u:n+k*864e5,p:0,at:n});await d.collection('inbox').add({to:u,t:'إيقاف مؤقت',m:m||('تم إيقاف حسابك '+k+' يوم'),at:n})}
+else if(a=='ban')await d.collection('bans').doc(u).set({p:1,u:0,at:n});else await d.collection('bans').doc(u).delete();toast('✅ تم')}catch(e){toast('تعذّر التنفيذ')}}
+async function addT(){var d=await getdb(),t=$('kt').value.trim(),l=$('kl').value.trim();if(!d||!t)return;await d.collection('tasks').add({t:t,pf:$('kp').value,l:/^https?:\/\//.test(l)?l:'',pts:+$('kpt').value||5,dl:$('kdl').checked?1:0,at:Date.now()});$('kt').value=$('kl').value='';adl()}
+async function seedT(){var d=await getdb();if(!d)return;var a=[['اشترك في قناة صاحب التطبيق','TikTok',200,0],['ضع 10 لايكات على فيديوهات تيك توك','TikTok',5,1],['اكتب تعليقاً على فيديو في تيك توك','TikTok',5,1],['شاهد فيديو على تيك توك','TikTok',9,1],['اشترك في القناة المحددة','YouTube',10,0]];for(var i=0;i<a.length;i++)await d.collection('tasks').add({t:a[i][0],pf:a[i][1],l:'',pts:a[i][2],dl:a[i][3],at:Date.now()+i});adl()}
+</script>
+</body>
+</html>
