@@ -39,7 +39,7 @@ nav button.on{color:var(--g)}
 pre{white-space:pre-wrap;font-family:inherit;margin:6px 0}
 .av{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;background:var(--g2);color:#000;font-weight:800;font-size:.8em}
 /* ---- Gold Studio ---- */
-body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(10,10,10,.35),rgba(10,10,10,.65)),url("gold-studio-bg.jpg") center top/cover no-repeat,#0a0a0a}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(10,10,10,.35),rgba(10,10,10,.65)),url("gold-bg.jpg") center top/cover no-repeat,#0a0a0a}
 .gs-header{text-align:center;padding:22px 12px 10px;border-bottom:1px solid var(--bd,#3a3015);margin:0 auto 8px;max-width:560px}
 .gs-logo{width:96px;height:96px;border-radius:22px;border:1px solid var(--g2,#a8801a);box-shadow:0 6px 22px #000a,0 0 0 3px #0008;display:block;margin:0 auto 10px}
 .gs-header h1{font-size:2.2rem;letter-spacing:.5px;margin:0}
@@ -69,7 +69,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-grad
 <body>
 <div class="w" id="app">
 <header class="gs-header">
-  <img class="gs-logo" src="gold-studio-icon-192.png" width="96" height="96" alt="Gold Studio logo">
+  <img class="gs-logo" src="icon.png" width="96" height="96" alt="Gold Studio logo">
   <h1 class="gt">Gold Studio</h1>
   <p class="gs-sub">محلل تيك توك — TikTok Analyzer</p>
   <a class="gs-url" href="https://siiberram.github.io/gold-studio/">https://siiberram.github.io/gold-studio</a>
@@ -109,7 +109,7 @@ function render(){
 }
 function auth(){
  var m=ver==="login";
- R("<div style='text-align:center;margin:28px 0 8px'><div style='font-size:3em'>✦</div><h1 class=gt>جولد ستوديو</h1><div class=mu>حلّل حسابك على تيك توك · اربح نقاطًا · أبدع بالذكاء الاصطناعي</div></div><div class=card><div class=row><button class='b s "+(m?"":"o")+"' onclick=\"ver='login';auth()\">دخول</button><button class='b s "+(m?"o":"")+"' onclick=\"ver='';auth()\">حساب جديد</button></div><input id=e type=email placeholder='البريد الإلكتروني'>"+(m?"":"<input id=ph type=tel placeholder='رقم الهاتف (اختياري)'>")+"<input id=pw type=password placeholder='الرقم السري'>"+(m?"":"<input id=pw2 type=password placeholder='تأكيد الرقم السري'>")+"<button class=b onclick=\"go("+m+")\">"+(m?"تسجيل الدخول":"إنشاء الحساب")+"</button><button class='b o' onclick='ttConnect()'>🎵 تسجيل الدخول عبر تيك توك</button><button class='b o' onclick=\"alert('الدخول عبر فيسبوك يحتاج ربطًا رسميًا في النسخة الحقيقية')\">تسجيل الدخول عبر فيسبوك</button></div>");
+ R("<div style='text-align:center;margin:28px 0 8px'><img src='icon.png' width='96' height='96' alt='Gold Studio' style='border-radius:50%'><h1 class=gt>Gold Studio</h1><div class=mu>حلّل حسابك على تيك توك · اربح نقاطًا · أبدع بالذكاء الاصطناعي</div></div><div class=card><div class=row><button class='b s "+(m?"":"o")+"' onclick=\"ver='login';auth()\">دخول</button><button class='b s "+(m?"o":"")+"' onclick=\"ver='';auth()\">حساب جديد</button></div><input id=e type=email placeholder='البريد الإلكتروني'>"+(m?"":"<input id=ph type=tel placeholder='رقم الهاتف (اختياري)'>")+"<input id=pw type=password placeholder='الرقم السري'>"+(m?"":"<input id=pw2 type=password placeholder='تأكيد الرقم السري'>")+"<button class=b onclick=\"go("+m+")\">"+(m?"تسجيل الدخول":"إنشاء الحساب")+"</button><button class='b o' onclick='ttConnect()'>🎵 تسجيل الدخول عبر تيك توك</button><button class='b o' onclick=\"alert('الدخول عبر فيسبوك يحتاج ربطًا رسميًا في النسخة الحقيقية')\">تسجيل الدخول عبر فيسبوك</button></div>");
  if(!ver)ver="";
 }
 function go(login){
@@ -137,7 +137,7 @@ function redeem(){var c=G("cd").value,x=chk(c);if(x===-1)return alert("انته�
 var NAV=[["home","✦","الخدمات"],["quests","🏆","المهام"],["chan","📺","القنوات"],["rank","🏅","الترتيب"],["ai","🤖","الذكاء"],["com","💬","المجتمع"],["nt","🔔","الإشعارات"],["me","👤","حسابي"],["adm","🛡️","الإدارة"]];
 function unseen(){return (U.notes||[]).length+D.bc.length-U.seen}
 function main(){
- var b=isA()?"∞":U.pts,s="<div class=row><h2 class=gt>✦ جولد ستوديو</h2><span class=tag>"+(isA()?"👑 المدير":paid()?"💎 مشترك":"🎁 مجاني")+"</span></div><div class='card hl'><div class=row><span>"+av(U)+" "+nm(U)+"</span><span class=pts style='font-size:1.3em'>"+b+" نقطة</span></div></div>";
+ var b=isA()?"∞":U.pts,s="<div class=row><h2 class=gt>Gold Studio</h2><span class=tag>"+(isA()?"👑 المدير":paid()?"💎 مشترك":"🎁 مجاني")+"</span></div><div class='card hl'><div class=row><span>"+av(U)+" "+nm(U)+"</span><span class=pts style='font-size:1.3em'>"+b+" نقطة</span></div></div>";
  if(tab==="home")s+=home();else if(tab==="quests")s+=quests()+ads();else if(tab==="chan")s+=chan();else if(tab==="rank")s+=rank();else if(tab==="com")s+=com();else if(tab==="ai")s+=aiP()+upl();else if(tab==="nt")s+=nts();else if(tab==="adm")s+=adm();else s+=me()+prof();
  s+="<nav>"+NAV.filter(function(n){return n[0]!=="adm"||isM()}).map(function(n){var u=n[0]==="nt"&&unseen()>0&&tab!=="nt"?"<span class=dot>"+unseen()+"</span>":"";return "<button class='"+(tab===n[0]?"on":"")+"' onclick=\"tab='"+n[0]+"';out='';main()\"><i>"+n[1]+"</i>"+n[2]+u+"</button>"}).join("")+"</nav>";
  R(s);
@@ -289,7 +289,7 @@ function mkCode(days){var r=Math.random().toString(36).slice(2,7).toUpperCase().
 function chk(c){var r=c.toUpperCase().replace(/[^A-Z0-9]/g,"");if(r.slice(0,2)!=="GS"||r.length!==16)return 0;var p=r.slice(2,12);if(h4(p)!==r.slice(12))return 0;var i=parseInt(p.slice(7,10),36),n=Math.floor(Date.now()/864e5)%46656;if((n-i+46656)%46656>14)return -1;return {days:+p.slice(5,7)||30,id:r}}
 function genC(){var d=+prompt("مدة الاشتراك بالأيام","30")||30,c=mkCode(d);G("nc").innerHTML="الكود ("+d+" يوم، صالح للتفعيل 14 يومًا): <b class=pts style='user-select:all'>"+c+"</b>";try{navigator.clipboard.writeText(c)}catch(e){}}
 function payPP(){window.open("https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business="+encodeURIComponent(ADMIN)+"&item_name="+encodeURIComponent("Gold Studio monthly")+"&amount=3.00&currency_code=USD&no_shipping=1","_blank")}
-function proof(){notifyOwner("طلب تفعيل اشتراك",U.email);location.href="mailto:"+ADMIN+"?subject="+encodeURIComponent("إثبات دفع جولد ستوديو")+"&body="+encodeURIComponent("بريد حسابي: "+U.email+"\nرقم عملية PayPal: ")}
+function proof(){notifyOwner("طلب تفعيل اشتراك",U.email);location.href="mailto:"+ADMIN+"?subject="+encodeURIComponent("Gold Studio payment proof")+"&body="+encodeURIComponent("بريد حسابي: "+U.email+"\nرقم عملية PayPal: ")}
 function payCard(){return "<div class=card><h3>💎 اشتراك / تجديد (3$ شهريًا)</h3><button class=b onclick=payPP()>💳 ادفع عبر PayPal</button><button class=b onclick=proof()>✉️ أرسل إثبات الدفع للمدير</button><p class=mu>يصلك كود التفعيل بعد التحقق من الدفع.</p></div>"}
 function notifyOwner(t,m){try{D.ev=D.ev||[];var e={t:t,m:m,d:new Date().toLocaleString("ar")};D.ev.unshift(e);D.ev=D.ev.slice(0,100);sv();if(NOTIFY_URL)fetch(NOTIFY_URL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({event:t,details:m,time:e.d})}).catch(function(){});}catch(x){}}
 function pullEv(){return;fetch(FB_URL+"/events.json").then(function(r){return r.json()}).then(function(o){var a=Object.values(o||{}).reverse().slice(0,100);if(JSON.stringify(a)!==JSON.stringify(D.ev)){D.ev=a;sv();if(tab==="adm")main()}}).catch(function(){})}
